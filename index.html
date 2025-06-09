@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>江浙沪零碳绿色酒店白皮书</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700&display=swap"  rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Noto Serif SC', serif;
+            overflow: hidden;
+            background: linear-gradient(135deg, #0a2e1d 0%, #0c3b29 50%, #0d4d3a 100%);
+            color: #fff;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective: 1000px;
+        }
+        
+        .container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+        
+        .content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+            text-align: center;
+            padding: 1.8rem; /* 直接采用移动端较小的内边距 */
+            max-width: 95%; /* 直接采用移动端较大的宽度占比 */
+            background: rgba(5, 30, 22, 0.6);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(100, 200, 150, 0.2);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+        }
+        
+        h1 {
+            font-size: 1.8rem; /* 直接采用移动端较小的字体大小 */
+            margin-bottom: 1.5rem;
+            background: linear-gradient(to right, #c8e6c9, #d4e157, #aed581);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 2px 10px rgba(200, 230, 201, 0.3);
+            letter-spacing: 2px;
+            line-height: 1.3;
+            white-space: nowrap; /* 确保标题不换行 */
+        }
+        
+        h2 {
+            font-size: 1.1rem; /* 直接采用移动端较小的字体大小 */
+            font-weight: 400;
+            margin-bottom: 2rem;
+            color: #e0f7e0;
+            letter-spacing: 1px;
+            white-space: nowrap; /* 确保副标题不换行 */
+        }
+        
+        .subtitle {
+            font-size: 1rem; /* 直接采用移动端较小的字体大小 */
+            margin-top: 2rem;
+            color: #a5d6a7;
+            font-weight: 300;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        
+        .date {
+            position: absolute;
+            bottom: 20px; /* 直接采用移动端较小的底部间距 */
+            right: 20px; /* 直接采用移动端较小的右侧间距 */
+            font-size: 0.85rem; /* 直接采用移动端较小的字体大小 */
+            color: #c8e6c9;
+            z-index: 20;
+            background: rgba(10, 40, 28, 0.7);
+            padding: 8px 15px; /* 直接采用移动端较小的内边距 */
+            border-radius: 8px;
+            border: 1px solid rgba(168, 228, 160, 0.4);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+        
+        .water-wave {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 80px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 1440 120"><path fill="%23081c15" fill-opacity="0.7" d="M0,64L60,69.3C120,75,240,85,360,80C480,75,600,53,720,48C840,43,960,53,1080,58.7C1200,64,1320,64,1380,64L1440,64L1440,120L1380,120C1320,120,1200,120,1080,120C960,120,840,120,720,120C600,120,480,120,360,120C240,120,120,120,60,120L0,120Z"></path></svg>');
+            background-size: cover;
+            z-index: 5;
+            animation: wave 15s linear infinite;
+        }
+        
+        .leaf {
+            position: absolute;
+            font-size: 2rem;
+            color: #8bc34a;
+            opacity: 0.7;
+            z-index: 2;
+            animation: float-leaf 15s linear infinite;
+        }
+        
+        .eco-icon {
+            position: absolute;
+            width: 60px; /* 直接采用移动端较小的图标尺寸 */
+            height: 60px; /* 直接采用移动端较小的图标尺寸 */
+            z-index: 5;
+            opacity: 0.6;
+        }
+        
+        .eco-icon.top-left  {
+            top: 30px;
+            left: 30px;
+        }
+        
+        .eco-icon.top-right  {
+            top: 30px;
+            right: 30px;
+        }
+        
+        @keyframes wave {
+            0% { background-position-x: 0; }
+            100% { background-position-x: 1440px; }
+        }
+        
+        @keyframes float-leaf {
+            0% { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.7; }
+            90% { opacity: 0.7; }
+            100% { transform: translateY(-100vh) translateX(100px) rotate(360deg); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <canvas id="particleCanvas"></canvas>
+        
+        <div class="content">
+            <h1>江浙沪零碳绿色酒店白皮书</h1>
+            <h2>探索可持续发展新路径，引领酒店行业零碳转型</h2>
+            <div class="subtitle">碳中和 · 碳达峰 · 绿色发展</div>
+        </div>
+        
+        <div class="date" style="bottom: 40px; left: 40px; right: auto;">2025年6月8日发布</div>
+        <div style="position: absolute; bottom: 40px; right: 40px; left: auto; font-size: 1.1rem; color: #c8e6c9; z-index: 20; background: rgba(10, 40, 28, 0.7); padding: 12px 30px; border-radius: 8px; border: 1px solid rgba(168, 228, 160, 0.4); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); font-weight: 300; letter-spacing: 1px;">
+            <a href="Page-1 copy 2.html" style="text-decoration: none; color: inherit;">下一页</a>
+        </div>    
+        <div class="eco-icon top-left">🌱</div>
+        <div class="eco-icon top-right">♻️</div>
+        
+        <div class="water-wave"></div>
+        
+        <!-- 装饰性叶子 -->
+        <div class="leaf" style="top: 10%; left: 15%;">🍃</div>
+        <div class="leaf" style="top: 20%; right: 20%;">🌿</div>
+        <div class="leaf" style="top: 40%; left: 5%;">🍀</div>
+        <div class="leaf" style="top: 70%; right: 10%;">🌱</div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded',  function() {
+            const canvas = document.getElementById('particleCanvas'); 
+            const ctx = canvas.getContext('2d'); 
+            
+            // 设置画布大小为窗口尺寸 
+            canvas.width  = window.innerWidth; 
+            canvas.height  = window.innerHeight; 
+            
+            // 粒子类
+            class Particle {
+                constructor() {
+                    this.x = Math.random()  * canvas.width; 
+                    this.y = Math.random()  * canvas.height; 
+                    this.size  = Math.random()  * 3 + 1;
+                    this.speedX  = Math.random()  * 1 - 0.5;
+                    this.speedY  = Math.random()  * 1 - 0.5;
+                    this.color  = this.getRandomGreen(); 
+                }
+                
+                getRandomGreen() {
+                    const greens = [
+                        '#8bc34a', '#7cb342', '#689f38', '#558b2f', '#33691e',
+                        '#aed581', '#9ccc65', '#c5e1a5', '#dce775', '#e6ee9c'
+                    ];
+                    return greens[Math.floor(Math.random() * greens.length)]; 
+                }
+                
+                update() {
+                    this.x += this.speedX; 
+                    this.y += this.speedY; 
+                    
+                    // 边缘反弹 
+                    if (this.x < 0 || this.x > canvas.width)  this.speedX  *= -1;
+                    if (this.y < 0 || this.y > canvas.height)  this.speedY  *= -1;
+                }
+                
+                draw() {
+                    ctx.fillStyle  = this.color; 
+                    ctx.beginPath(); 
+                    ctx.arc(this.x,  this.y, this.size,  0, Math.PI * 2);
+                    ctx.fill(); 
+                    
+                    // 添加发光效果 
+                    ctx.shadowColor  = this.color; 
+                    ctx.shadowBlur  = 15;
+                }
+            }
+            
+            // 创建粒子 
+            const particles = [];
+            const particleCount = Math.min(200,  Math.floor(window.innerWidth  / 5));
+            
+            for (let i = 0; i < particleCount; i++) {
+                particles.push(new  Particle());
+            }
+            
+            // 绘制粒子间的连接线 
+            function drawConnections() {
+                for (let i = 0; i < particles.length;  i++) {
+                    for (let j = i; j < particles.length;  j++) {
+                        const dx = particles[i].x - particles[j].x;
+                        const dy = particles[i].y - particles[j].y;
+                        const distance = Math.sqrt(dx  * dx + dy * dy);
+                        
+                        if (distance < 100) {
+                            const opacity = 1 - distance / 100;
+                            ctx.strokeStyle  = `rgba(168, 228, 160, ${opacity * 0.3})`;
+                            ctx.lineWidth  = 0.8;
+                            ctx.beginPath(); 
+                            ctx.moveTo(particles[i].x,  particles[i].y);
+                            ctx.lineTo(particles[j].x,  particles[j].y);
+                            ctx.stroke(); 
+                        }
+                    }
+                }
+            }
+            
+            // 动画循环 
+            function animate() {
+                ctx.clearRect(0,  0, canvas.width,  canvas.height); 
+                
+                // 绘制径向渐变背景 
+                const gradient = ctx.createRadialGradient( 
+                    canvas.width  / 2, canvas.height  / 2, 0,
+                    canvas.width  / 2, canvas.height  / 2, Math.max(canvas.width,  canvas.height)  / 2 
+                );
+                gradient.addColorStop(0,  'rgba(10, 40, 28, 0.8)');
+                gradient.addColorStop(1,  'rgba(5, 25, 18, 0.9)');
+                ctx.fillStyle  = gradient;
+                ctx.fillRect(0,  0, canvas.width,  canvas.height); 
+                
+                // 更新并绘制粒子 
+                particles.forEach(particle  => {
+                    particle.update(); 
+                    particle.draw(); 
+                });
+                
+                // 绘制连接线 
+                drawConnections();
+                
+                requestAnimationFrame(animate);
+            }
+            
+            // 开始动画
+            animate();
+            
+            // 窗口大小调整处理
+            window.addEventListener('resize',  function() {
+                canvas.width  = window.innerWidth; 
+                canvas.height  = window.innerHeight; 
+            });
+        });
+    </script>
+</body>
+</html>
