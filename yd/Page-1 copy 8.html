@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>江浙沪零碳绿色酒店白皮书 - 挑战与建议</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700&display=swap"  rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"> 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> 
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Noto Serif SC', serif;
+            background: linear-gradient(135deg, #0a2e1d 0%, #0c3b29 50%, #0d4d3a 100%);
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        .container {
+            /* 移除最大宽度限制，使用内边距适配移动端 */
+            margin: 0 auto;
+            padding: 30px 15px; 
+            position: relative;
+            z-index: 10;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px; 
+            animation: fadeInDown 1s ease-out;
+        }
+        
+        h1 {
+            font-size: 2rem; 
+            margin-bottom: 0.8rem;
+            background: linear-gradient(to right, #c8e6c9, #d4e157, #aed581);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 2px 10px rgba(200, 230, 201, 0.3);
+            letter-spacing: 2px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        h1:after {
+            content: '';
+            position: absolute;
+            bottom: -8px; 
+            left: 15%;
+            width: 70%;
+            height: 2px; 
+            background: linear-gradient(to right, transparent, #aed581, transparent);
+        }
+        
+        .subtitle {
+            font-size: 1.2rem; 
+            color: #e0f7e0;
+            letter-spacing: 2px; 
+            font-weight: 300;
+        }
+        
+        .section-title {
+            font-size: 1.8rem; 
+            margin: 30px 0 20px; 
+            padding-bottom: 10px; 
+            border-bottom: 2px solid #4caf50;
+            color: #c8e6c9;
+            display: flex;
+            align-items: center;
+        }
+        
+        .section-title i {
+            margin-right: 10px; 
+            color: #aed581;
+        }
+        
+        .subsection-title {
+            font-size: 1.5rem; 
+            margin: 20px 0 15px; 
+            padding-left: 10px; 
+            border-left: 2px solid #4caf50; 
+            color: #e0f7e0;
+            display: flex;
+            align-items: center;
+        }
+        
+        .subsection-title i {
+            margin-right: 8px; 
+            color: #8bc34a;
+        }
+        
+        .content-card {
+            background: rgba(5, 30, 22, 0.6);
+            border-radius: 10px; 
+            padding: 20px; 
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(100, 200, 150, 0.2);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3); 
+            margin-bottom: 30px; 
+        }
+        
+        .bullet-list {
+            padding-left: 20px; 
+            margin: 15px 0; 
+        }
+        
+        .bullet-item {
+            margin-bottom: 15px; 
+            padding-left: 20px; 
+            position: relative;
+            line-height: 1.6; 
+        }
+        
+        .bullet-item:before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: #8bc34a;
+            font-size: 1.2rem; 
+        }
+        
+        .highlight {
+            background: rgba(168, 228, 160, 0.2);
+            padding: 2px 6px; 
+            border-radius: 3px; 
+            color: #c8e6c9;
+        }
+        
+        .chart-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px; 
+            margin: 30px 0; 
+        }
+        
+        .chart-box {
+            /* 移除最小宽度限制，让图表自适应移动端 */
+            flex: 1; 
+            background: rgba(8, 45, 30, 0.7);
+            border-radius: 8px; 
+            padding: 15px; 
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); 
+        }
+        
+        .chart-title {
+            text-align: center;
+            margin-bottom: 10px; 
+            font-size: 1.1rem; 
+            color: #c8e6c9;
+        }
+        
+        .chart-wrapper {
+            width: 100%;
+            height: 200px; 
+            position: relative;
+        }
+        
+        .solution-grid {
+            /* 移除最小列宽限制，让网格自适应移动端 */
+            display: grid;
+            grid-template-columns: 1fr; 
+            gap: 15px; 
+            margin: 20px 0; 
+        }
+        
+        .solution-card {
+            background: rgba(10, 50, 35, 0.7);
+            border-radius: 8px; 
+            padding: 15px; 
+            border: 1px solid rgba(100, 200, 150, 0.3);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .solution-card:hover {
+            transform: translateY(-3px); 
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3); 
+        }
+        
+        .solution-card h4 {
+            font-size: 1.1rem; 
+            margin-bottom: 10px; 
+            color: #aed581;
+            display: flex;
+            align-items: center;
+        }
+        
+        .solution-card h4 i {
+            margin-right: 8px; 
+        }
+        
+        .solution-card ul {
+            padding-left: 15px; 
+            margin-top: 8px; 
+            flex-grow: 1;
+        }
+        
+        .solution-card li {
+            margin-bottom: 6px; 
+            position: relative;
+            padding-left: 12px; 
+        }
+        
+        .solution-card li:before {
+            content: '▹';
+            position: absolute;
+            left: 0;
+            color: #8bc34a;
+        }
+        
+        .solution-image {
+            height: 150px; 
+            border-radius: 6px; 
+            overflow: hidden;
+            margin-top: 10px; 
+        }
+        
+        .solution-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .solution-card:hover .solution-image img {
+            transform: scale(1.03); 
+        }
+        
+        .page-number {
+            position: absolute;
+            bottom: 15px; 
+            right: 15px; 
+            font-size: 0.9rem; 
+            color: #c8e6c9;
+            background: rgba(10, 40, 28, 0.7);
+            padding: 6px 15px; 
+            border-radius: 6px; 
+            border: 1px solid rgba(168, 228, 160, 0.4);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2); 
+        }
+        
+        .source-note {
+            text-align: right;
+            font-size: 0.8rem; 
+            color: #a0d0a0;
+            margin-top: 4px; 
+            font-style: italic;
+        }
+        
+        /* 装饰元素 */
+        .eco-icon {
+            position: absolute;
+            z-index: 1;
+            opacity: 0.6;
+            font-size: 4rem; 
+            color: rgba(168, 228, 160, 0.1);
+        }
+        
+        .eco-icon.top-left  {
+            top: 15px; 
+            left: 15px; 
+        }
+        
+        .eco-icon.top-right  {
+            top: 15px; 
+            right: 15px; 
+        }
+        
+        .leaf {
+            position: absolute;
+            font-size: 1.5rem; 
+            color: #8bc34a;
+            opacity: 0.5;
+            z-index: 2;
+            animation: float 15s linear infinite;
+        }
+        
+        /* 动画效果 */
+        @keyframes float {
+            0% { transform: translateY(0) translateX(0) rotate(0deg); }
+            25% { transform: translateY(-10px) translateX(5px) rotate(10deg); }
+            50% { transform: translateY(-20px) translateX(-5px) rotate(20deg); }
+            75% { transform: translateY(-10px) translateX(5px) rotate(10deg); }
+            100% { transform: translateY(0) translateX(0) rotate(0deg); }
+        }
+        
+        @keyframes fadeInDown {
+            from { transform: translateY(-30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        /* 移除响应式设计，因为已经强制适配移动端 */
+    </style>
+</head>
+<body>
+    <!-- 装饰背景元素 -->
+    <div class="eco-icon top-left">♻️</div>
+    <div class="eco-icon top-right">ߌ</div>
+    <div class="leaf" style="top: 15%; left: 10%;">ߍ</div>
+    <div class="leaf" style="top: 25%; right: 15%;">ߌ</div>
+    <div class="leaf" style="top: 70%; left: 5%;">ߍ</div>
+    <div class="leaf" style="bottom: 20%; right: 10%;">ߌ</div>
+    
+    <div class="container">
+        <div class="header">
+            <h1>六、挑战与建议</h1>
+            <div class="subtitle">江浙沪零碳绿色酒店白皮书</div>
+        </div>
+        
+        <div class="content-card">
+            <div class="subsection-title">
+                <i class="fas fa-exclamation-triangle"></i> 6.1 核心挑战
+            </div>
+            
+            <ul class="bullet-list">
+                <li class="bullet-item">
+                    <strong>资金缺口：</strong>零碳改造平均成本增加 <span class="highlight">15%-20%</span>，中小企业融资困难 
+                    <div class="chart-container">
+                        <div class="chart-box">
+                            <div class="chart-title">不同规模酒店改造成本增加比例</div>
+                            <div class="chart-wrapper">
+                                <canvas id="costChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="chart-box">
+                            <div class="chart-title">资金缺口分布</div>
+                            <div class="chart-wrapper">
+                                <canvas id="fundingChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                
+                <li class="bullet-item">
+                    <strong>技术瓶颈：</strong>热泵、光伏等技术在高湿度地区效率衰减问题 
+                    <div class="solution-grid">
+                        <div class="solution-card">
+                            <h4><i class="fas fa-sun"></i> 光伏效率衰减曲线</h4>
+                            <div class="chart-wrapper">
+                                <canvas id="efficiencyChart"></canvas>
+                            </div>
+                            <div class="source-note">高湿度地区光伏效率下降可达20%以上</div>
+                        </div>
+                        <div class="solution-card">
+                            <h4><i class="fas fa-water"></i> 高湿度地区影响</h4>
+                            <div class="solution-image">
+                                <img src="https://images.unsplash.com/photo-1501788043442-a796c681aa4d?auto=format&fit=crop&w=600&q=80"  alt="高湿度环境影响">
+                            </div>
+                            <p>江浙沪地区年平均湿度>75%，显著影响设备性能</p>
+                        </div>
+                    </div>
+                </li>
+                
+                <li class="bullet-item">
+                    <strong>政策协同：</strong>跨区域碳管理机制尚未建立，认证标准不统一 
+                    <div class="solution-grid">
+                        <div class="solution-card">
+                            <h4><i class="fas fa-map-marked-alt"></i> 区域政策差异</h4>
+                            <div class="chart-wrapper">
+                                <canvas id="policyChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="solution-card">
+                            <h4><i class="fas fa-balance-scale"></i> 认证标准对比</h4>
+                            <ul>
+                                <li>上海：地方绿色建筑认证标准</li>
+                                <li>江苏：长三角一体化认证体系</li>
+                                <li>浙江：地方碳足迹核算标准</li>
+                                <li>国际：LEED、BREEAM等体系</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="source-note">数据来源：中国政府网政策分析</div>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="content-card">
+            <div class="subsection-title">
+                <i class="fas fa-lightbulb"></i> 6.2 对策建议 
+            </div>
+            
+            <div class="solution-grid">
+                <!-- 政策支持 -->
+                <div class="solution-card">
+                    <h4><i class="fas fa-file-invoice-dollar"></i> 政策支持</h4>
+                    <ul>
+                        <li>设立专项补贴（如上海超低能耗建筑补贴）</li>
+                        <li>试点碳普惠机制，鼓励消费者参与减碳</li>
+                    </ul>
+                    <div class="solution-image">
+                        <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=600&q=80"  alt="政策支持">
+                    </div>
+                    <div class="source-note">参考：绿建之窗、中国政府网</div>
+                </div>
+                
+                <!-- 技术创新 -->
+                <div class="solution-card">
+                    <h4><i class="fas fa-cogs"></i> 技术创新</h4>
+                    <ul>
+                        <li>开发本地化碳足迹核算工具</li>
+                        <li>引入上海桃形鲤公司零投入能源管理方案</li>
+                    </ul>
+                    <div class="solution-image">
+                        <img src="https://raw.githubusercontent.com/30515245/blogtc/master/20250608164627543.jpeg"  alt="技术创新">
+                    </div>
+                </div>
+                
+                <!-- 市场培育 -->
+                <div class="solution-card">
+                    <h4><i class="fas fa-seedling"></i> 市场培育</h4>
+                    <ul>
+                        <li>建立绿色消费积分体系</li>
+                        <li>开展行业碳标签认证，提升绿色溢价</li>
+                    </ul>
+                    <div class="solution-image">
+                        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=600&q=80"  alt="市场培育">
+                    </div>
+                    <div class="source-note">参考：小康杂志社</div>
+                </div>
+            </div>
+            
+            <div class="chart-container">
+                <div class="chart-box">
+                    <div class="chart-title">解决方案预期效果预测</div>
+                    <div class="chart-wrapper">
+                        <canvas id="impactChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="page-number" style="left: 30px; right: auto;">第 6 页</div>
+        <div class="page-number" style="right: 30px;">
+            <a href="Page-1 copy 9.html" style="color: inherit; text-decoration: none;">下一页</a>
+        </div>
+    </div>
+ 
+    <script>
+        // 初始化图表
+        document.addEventListener('DOMContentLoaded',  function() {
+            // 改造成本图表 
+            const costCtx = document.getElementById('costChart').getContext('2d'); 
+            new Chart(costCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['大型酒店', '中型酒店', '小型酒店'],
+                    datasets: [{
+                        label: '成本增加比例 (%)',
+                        data: [18, 22, 25],
+                        backgroundColor: [
+                            'rgba(76, 175, 80, 0.7)',
+                            'rgba(139, 195, 74, 0.7)',
+                            'rgba(205, 220, 57, 0.7)'
+                        ],
+                        borderColor: [
+                            'rgba(76, 175, 80, 1)',
+                            'rgba(139, 195, 74, 1)',
+                            'rgba(205, 220, 57, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    animation: {
+                        duration: 2000,
+                        easing: 'easeOutQuart'
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(200, 230, 201, 0.1)'
+                            },
+                            ticks: {
+                                color: '#e0f7e0'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false 
+                            },
+                            ticks: {
+                                color: '#e0f7e0'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: '#c8e6c9'
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // 资金缺口图表 
+            const fundingCtx = document.getElementById('fundingChart').getContext('2d'); 
+            new Chart(fundingCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['设备采购', '技术升级', '认证费用', '培训成本'],
+                    datasets: [{
+                        label: '资金缺口分布',
+                        data: [45, 30, 15, 10],
+                        backgroundColor: [
+                            'rgba(76, 175, 80, 0.8)',
+                            'rgba(139, 195, 74, 0.8)',
+                            'rgba(205, 220, 57, 0.8)',
+                            'rgba(255, 193, 7, 0.8)'
+                        ],
+                        borderColor: [
+                            'rgba(76, 175, 80, 1)',
+                            'rgba(139, 195, 74, 1)',
+                            'rgba(205, 220, 57, 1)',
+                            'rgba(255, 193, 7, 1)'
+                        ],
+                        borderWidth: 1 
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    animation: {
+                        duration: 2000,
+                        easing: 'easeOutQuart'
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                            labels: {
+                                color: '#c8e6c9',
+                                padding: 15 
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // 效率衰减图表 
+            const efficiencyCtx = document.getElementById('efficiencyChart').getContext('2d'); 
+            new Chart(efficiencyCtx, {
+                type: 'line',
+                data: {
+                    labels: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+                    datasets: [{
+                        label: '标准地区光伏效率 (%)',
+                        data: [92, 94, 96, 98, 100, 100, 98, 96, 94, 92, 90, 88],
+                        borderColor: 'rgba(76, 175, 80, 1)',
+                        backgroundColor: 'rgba(76, 175, 80, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }, {
+                        label: '高湿度地区光伏效率 (%)',
+                        data: [80, 78, 76, 75, 76, 74, 70, 68, 72, 75, 78, 80],
+                        borderColor: 'rgba(255, 193, 7, 1)',
+                        backgroundColor: 'rgba(255, 193, 7, 0.1)',
+                        tension: 0.4,
+                        fill: true 
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    animation: {
+                        duration: 2000,
+                        easing: 'easeOutQuart'
+                    },
+                    scales: {
+                        y: {
+                            min: 60,
+                            grid: {
+                                color: 'rgba(200, 230, 201, 0.1)'
+                            },
+                            ticks: {
+                                color: '#e0f7e0'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                color: 'rgba(200, 230, 201, 0.1)'
+                            },
+                            ticks: {
+                                color: '#e0f7e0'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: '#c8e6c9'
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // 政策协同图表
+            const policyCtx = document.getElementById('policyChart').getContext('2d'); 
+            new Chart(policyCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['政策完善度', '执行力度', '区域协同'],
+                    datasets: [{
+                        label: '上海',
+                        data: [85, 90, 75],
+                        backgroundColor: 'rgba(76, 175, 80, 0.7)'
+                    }, {
+                        label: '江苏',
+                        data: [80, 85, 85],
+                        backgroundColor: 'rgba(139, 195, 74, 0.7)'
+                    }, {
+                        label: '浙江',
+                        data: [90, 80, 80],
+                        backgroundColor: 'rgba(205, 220, 57, 0.7)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    animation: {
+                        duration: 2000,
+                        easing: 'easeOutQuart'
+                    },
+                    scales: {
+                        y: {
+                            min: 50,
+                            max: 100,
+                            grid: {
+                                color: 'rgba(200, 230, 201, 0.1)'
+                            },
+                            ticks: {
+                                color: '#e0f7e0'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false 
+                            },
+                            ticks: {
+                                color: '#e0f7e0'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: '#c8e6c9'
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // 解决方案影响图表 
+            const impactCtx = document.getElementById('impactChart').getContext('2d'); 
+            new Chart(impactCtx, {
+                type: 'radar',
+                data: {
+                    labels: ['成本节约', '技术可行性', '减排效果', '实施难度', '政策支持', '市场接受度'],
+                    datasets: [
+                        {
+                            label: '政策支持方案',
+                            data: [75, 85, 80, 65, 95, 70],
+                            fill: true,
+                            backgroundColor: 'rgba(76, 175, 80, 0.2)',
+                            borderColor: 'rgba(76, 175, 80, 1)',
+                            pointBackgroundColor: 'rgba(76, 175, 80, 1)'
+                        },
+                        {
+                            label: '技术创新方案',
+                            data: [90, 65, 95, 55, 80, 75],
+                            fill: true,
+                            backgroundColor: 'rgba(255, 193, 7, 0.2)',
+                            borderColor: 'rgba(255, 193, 7, 1)',
+                            pointBackgroundColor: 'rgba(255, 193, 7, 1)'
+                        },
+                        {
+                            label: '市场培育方案',
+                            data: [60, 70, 65, 80, 75, 90],
+                            fill: true,
+                            backgroundColor: 'rgba(33, 150, 243, 0.2)',
+                            borderColor: 'rgba(33, 150, 243, 1)',
+                            pointBackgroundColor: 'rgba(33, 150, 243, 1)'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    animation: {
+                        duration: 2000,
+                        easing: 'easeOutQuart'
+                    },
+                    scales: {
+                        r: {
+                            angleLines: {
+                                color: 'rgba(200, 230, 201, 0.1)'
+                            },
+                            grid: {
+                                color: 'rgba(200, 230, 201, 0.1)'
+                            },
+                            pointLabels: {
+                                color: '#e0f7e0'
+                            },
+                            ticks: {
+                                backdropColor: 'transparent',
+                                color: '#e0f7e0'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: '#c8e6c9'
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
