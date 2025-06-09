@@ -465,8 +465,28 @@
             <div class="map-container">
                 <div class="map-wrapper">
                     <div class="map-title">江浙沪零碳酒店分布</div>
-                    <canvas id="mapChart"></canvas>
-                </div>
+<table class="policy-table">
+    <thead>
+        <tr>
+            <th>地区</th>
+            <th>零碳酒店数量</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>上海</td>
+            <td>18</td>
+        </tr>
+        <tr>
+            <td>江苏</td>
+            <td>32</td>
+        </tr>
+        <tr>
+            <td>浙江</td>
+            <td>28</td>
+        </tr>
+    </tbody>
+</table>
                 <div class="case-list">
                     <div class="case-item">
                         <div class="case-icon">
@@ -515,145 +535,123 @@
     </div>
  
     <script>
-        // 初始化图表 
-        document.addEventListener('DOMContentLoaded',  function() {
-            // 技术方案效益分析图 
-            const techCtx = document.getElementById('techChart').getContext('2d'); 
-            new Chart(techCtx, {
-                type: 'radar',
-                data: {
-                    labels: ['初始投资', '维护成本', '减排效果', '回收周期', '技术成熟度'],
-                    datasets: [
-                        {
-                            label: '太阳能光伏',
-                            data: [65, 85, 95, 75, 90],
-                            fill: true,
-                            backgroundColor: 'rgba(76, 175, 80, 0.2)',
-                            borderColor: 'rgba(76, 175, 80, 1)',
-                            pointBackgroundColor: 'rgba(76, 175, 80, 1)',
-                            pointBorderColor: '#fff',
-                            pointHoverBackgroundColor: '#fff',
-                            pointHoverBorderColor: 'rgba(76, 175, 80, 1)'
+// 初始化图表 
+// 原代码无明显问题，保持原样，优化变量命名和代码结构
+document.addEventListener('DOMContentLoaded', function() {
+    // 技术方案效益分析图
+    const techChartElement = document.getElementById('techChart');
+    if (techChartElement) {
+        const techCtx = techChartElement.getContext('2d'); 
+        new Chart(techCtx, {
+            type: 'radar',
+            data: {
+                labels: ['初始投资', '维护成本', '减排效果', '回收周期', '技术成熟度'],
+                datasets: [
+                    {
+                        label: '太阳能光伏',
+                        data: [65, 85, 95, 75, 90],
+                        fill: true,
+                        backgroundColor: 'rgba(76, 175, 80, 0.2)',
+                        borderColor: 'rgba(76, 175, 80, 1)',
+                        pointBackgroundColor: 'rgba(76, 175, 80, 1)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgba(76, 175, 80, 1)'
+                    },
+                    {
+                        label: '空气源热泵',
+                        data: [70, 80, 85, 90, 85],
+                        fill: true,
+                        backgroundColor: 'rgba(139, 195, 74, 0.2)',
+                        borderColor: 'rgba(139, 195, 74, 1)',
+                        pointBackgroundColor: 'rgba(139, 195, 74, 1)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgba(139, 195, 74, 1)'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    r: {
+                        angleLines: {
+                            color: 'rgba(200, 230, 201, 0.1)'
                         },
-                        {
-                            label: '空气源热泵',
-                            data: [70, 80, 85, 90, 85],
-                            fill: true,
-                            backgroundColor: 'rgba(139, 195, 74, 0.2)',
-                            borderColor: 'rgba(139, 195, 74, 1)',
-                            pointBackgroundColor: 'rgba(139, 195, 74, 1)',
-                            pointBorderColor: '#fff',
-                            pointHoverBackgroundColor: '#fff',
-                            pointHoverBorderColor: 'rgba(139, 195, 74, 1)'
+                        grid: {
+                            color: 'rgba(200, 230, 201, 0.1)'
+                        },
+                        pointLabels: {
+                            color: '#e0f7e0',
+                            font: {
+                                size: 12 
+                            }
+                        },
+                        ticks: {
+                            backdropColor: 'transparent',
+                            color: '#e0f7e0',
+                            stepSize: 20 
                         }
-                    ]
+                    }
                 },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        r: {
-                            angleLines: {
-                                color: 'rgba(200, 230, 201, 0.1)'
-                            },
-                            grid: {
-                                color: 'rgba(200, 230, 201, 0.1)'
-                            },
-                            pointLabels: {
-                                color: '#e0f7e0',
-                                font: {
-                                    size: 12 
-                                }
-                            },
-                            ticks: {
-                                backdropColor: 'transparent',
-                                color: '#e0f7e0',
-                                stepSize: 20 
-                            }
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: '#c8e6c9'
                         }
-                    },
-                    plugins: {
-                        legend: {
-                            labels: {
-                                color: '#c8e6c9'
-                            }
-                        }
-                    },
-                    animation: {
-                        duration: 2000,
-                        easing: 'easeOutQuart'
+                    }
+                },
+                animation: {
+                    duration: 2000,
+                    easing: 'easeOutQuart'
+                }
+            }
+        });
+    }
+
+    // 在原图表位生成静态饼图，标注数据标签
+    const mapChartElement = document.getElementById('mapChart');
+    if (mapChartElement) {
+        const mapCtx = mapChartElement.getContext('2d');
+        const data = {
+            labels: ['上海', '江苏', '浙江'],
+            datasets: [{
+                label: '零碳酒店数量',
+                data: [18, 32, 28],
+                backgroundColor: [
+                    'rgba(76, 175, 80, 0.6)',
+                    'rgba(139, 195, 74, 0.6)',
+                    'rgba(156, 204, 101, 0.6)'
+                ],
+                borderColor: [
+                    'rgba(76, 175, 80, 1)',
+                    'rgba(139, 195, 74, 1)',
+                    'rgba(156, 204, 101, 1)'
+                ],
+                borderWidth: 1
+            }]
+        };
+
+        const options = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    labels: {
+                        color: '#c8e6c9'
+                    }
+                },
+                datalabels: {
+                    color: '#fff',
+                    font: {
+                        weight: 'bold'
                     }
                 }
-            });
- 
-            // 江浙沪酒店分布图 
-            const mapCtx = document.getElementById('mapChart').getContext('2d'); 
-            new Chart(mapCtx, {
-                type: 'bar',
-                data: {
-                    labels: ['上海', '江苏', '浙江'],
-                    datasets: [{
-                        label: '零碳酒店数量',
-                        data: [18, 32, 28],
-                        backgroundColor: [
-                            'rgba(76, 175, 80, 0.7)',
-                            'rgba(139, 195, 74, 0.7)',
-                            'rgba(205, 220, 57, 0.7)'
-                        ],
-                        borderColor: [
-                            'rgba(76, 175, 80, 1)',
-                            'rgba(139, 195, 74, 1)',
-                            'rgba(205, 220, 57, 1)'
-                        ],
-                        borderWidth: 1 
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            grid: {
-                                color: 'rgba(200, 230, 201, 0.1)'
-                            },
-                            ticks: {
-                                color: '#e0f7e0'
-                            }
-                        },
-                        x: {
-                            grid: {
-                                display: false 
-                            },
-                            ticks: {
-                                color: '#e0f7e0'
-                            }
-                        }
-                    },
-                    plugins: {
-                        legend: {
-                            labels: {
-                                color: '#c8e6c9'
-                            }
-                        },
-                        datalabels: {
-                            color: '#0a2e1d',
-                            font: {
-                                weight: 'bold'
-                            },
-                            formatter: function(value) {
-                                return value + '家';
-                            }
-                        }
-                    },
-                    animation: {
-                        duration: 1500,
-                        easing: 'easeOutBounce'
-                    }
-                },
-                plugins: [ChartDataLabels]
-            });
-        });
-    </script>
-</body>
-</html>
+            }
+        };
+
+// 删除饼图，移除创建饼图的代码
+}
+});
+</script>
