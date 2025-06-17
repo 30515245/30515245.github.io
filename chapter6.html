@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第六章：结论与建议</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#7abf18',
+                        'primary-dark': '#5A9E16',
+                        'primary-light': '#B5E673',
+                        accent: '#16A085',
+                        neutral: '#F0F8FF',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .text-shadow {
+                text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            .card-hover {
+                transition: all 0.3s ease;
+            }
+            .card-hover:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            }
+        }
+    </style>
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F0F8FF;
+            color: #333;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* 汉堡菜单按钮样式 */
+        .menu-toggle {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            z-index: 50;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 30px;
+            height: 24px;
+            cursor: pointer;
+            padding: 5px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 5px;
+        }
+        .menu-toggle span {
+            display: block;
+            width: 100%;
+            height: 3px;
+            background-color: #5A9E16;
+            border-radius: 2px;
+            transition: all 0.3s ease-in-out;
+        }
+        .menu-toggle.active #line1 {
+            transform: translateY(10px) rotate(45deg);
+        }
+        .menu-toggle.active #line2 {
+            opacity: 0;
+        }
+        .menu-toggle.active #line3 {
+            transform: translateY(-10px) rotate(-45deg);
+        }
+
+        /* 侧边菜单样式 */
+        .side-menu {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 250px;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.98);
+            box-shadow: -5px 0 15px rgba(0,0,0,0.2);
+            transform: translateX(100%);
+            transition: transform 0.3s ease-out;
+            z-index: 40;
+            padding-top: 80px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            padding-left: 20px;
+        }
+        .side-menu.open {
+            transform: translateX(0);
+        }
+        .side-menu a {
+            color: #333;
+            padding: 10px 0;
+            text-decoration: none;
+            font-size: 1.1rem;
+            width: 100%;
+            border-bottom: 1px solid #eee;
+        }
+        .side-menu a:last-child {
+            border-bottom: none;
+        }
+        .side-menu a:hover {
+            color: #7abf18;
+        }
+
+        /* 遮罩层 */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 30;
+            display: none;
+        }
+        .overlay.visible {
+            display: block;
+        }
+
+        /* 动画效果 */
+        .fade-in {
+            animation: fadeIn 0.8s ease-in-out forwards;
+            opacity: 0;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .slide-in {
+            animation: slideIn 0.6s ease-out forwards;
+            opacity: 0;
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        /* 导航动画 */
+        .nav-link {
+            position: relative;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background-color: #B5E673;
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        /* 滚动动画触发 */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        
+        .animate-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* 标题动画 */
+        .title-enter {
+            animation: titleEnter 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            transform: translateY(-50px);
+            opacity: 0;
+        }
+        
+        @keyframes titleEnter {
+            0% {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body class="bg-neutral text-gray-800 font-sans">
+    <button id="menu-toggle" class="menu-toggle">
+        <span id="line1"></span>
+        <span id="line2"></span>
+        <span id="line3"></span>
+    </button>
+
+    <div id="side-menu" class="side-menu">
+        <a href="index.html">首页</a>
+        <a href="chapter1.html">第一章</a>
+        <a href="chapter2.html">第二章</a>
+        <a href="chapter3.html">第三章</a>
+        <a href="chapter4.html">第四章</a>
+        <a href="chapter5.html">第五章</a>
+        <a href="chapter6.html">第六章</a>
+        <a href="chapter7.html">第七章</a>
+        <a href="chapter8.html">关于我们</a>
+    </div>
+
+    <div id="overlay" class="overlay"></div>
+    
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <section class="mb-20 text-center title-enter">
+            <h1 class="text-[clamp(2.5rem,5vw,4rem)] font-bold text-primary-dark mb-4 text-shadow">
+                第六章：结论与建议
+            </h1>
+            <div class="w-20 h-1 bg-accent mx-auto rounded-full"></div>
+        </section>
+        
+        <section id="section1" class="mb-24 animate-on-scroll">
+            <div class="bg-white rounded-xl shadow-lg p-8 fade-in">
+                <h2 class="text-[clamp(1.5rem,3vw,2rem)] font-bold text-primary mb-8 text-center">
+                    6.1 主要研究发现
+                </h2>
+                
+                <div class="space-y-8">
+                    <div class="flex items-start">
+                        <div class="bg-primary-light rounded-full p-3 mr-4 mt-1">
+                            <i class="fa fa-map-marker text-primary-dark"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-xl mb-2">区域发展不均衡</h4>
+                            <p class="text-gray-700">浙江省绿色酒店数量居全国第一，截至 2021 年底已创建 392 家绿色旅游饭店；江苏省在国家标准绿色饭店认证方面表现突出，2025 年前两批就有 10 家酒店获得认证；上海则在国际认证和高端绿色酒店方面领先，LEED 认证项目数量在 2024 年位居全国第一。</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start">
+                        <div class="bg-primary-light rounded-full p-3 mr-4 mt-1">
+                            <i class="fa fa-certificate text-primary-dark"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-xl mb-2">认证体系多元化</h4>
+                            <p class="text-gray-700">绿色酒店采用的认证体系包括国家标准绿色饭店认证、绿色旅游饭店认证、LEED 认证等，呈现多元化特点。2025 年，绿色饭店认证企业数量正快速增长，预计从 2025 年的 150 家增加至 2030 年的 450 家。</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start">
+                        <div class="bg-primary-light rounded-full p-3 mr-4 mt-1">
+                            <i class="fa fa-cogs text-primary-dark"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-xl mb-2">实践内容差异化</h4>
+                            <p class="text-gray-700">不同类型、不同预算的绿色酒店在绿色实践方面存在差异。高端绿色酒店注重全产业链绿色和奢华体验；中端绿色酒店平衡成本与绿色实践；经济型绿色酒店则采取基础绿色措施和实用主义设计。</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start">
+                        <div class="bg-primary-light rounded-full p-3 mr-4 mt-1">
+                            <i class="fa fa-users text-primary-dark"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-xl mb-2">消费需求推动转型</h4>
+                            <p class="text-gray-700">消费者对可持续属性的需求增加，超八成酒店预订将涉及 ESG 筛选，推动酒店提升绿色水平。同时，消费者对健康、安全、舒适的住宿环境需求增加，推动绿色酒店向更健康的方向发展。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="section2" class="mb-24 animate-on-scroll">
+            <h2 class="text-[clamp(1.5rem,3vw,2rem)] font-bold text-primary mb-10 text-center">
+                6.2 对酒店业的建议
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
+                    <div class="text-center mb-4">
+                        <div class="w-16 h-16 bg-primary-light rounded-full flex items-center justify-center mx-auto mb-3">
+                            <i class="fa fa-chain text-primary-dark text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">构建全产业链绿色体系</h3>
+                    </div>
+                    <p class="text-gray-700 text-sm">酒店应从建筑设计、材料选择、设备采购到运营管理、废弃物处理，构建全产业链的绿色体系，而不仅仅是在运营环节实施节能措施。阳澄湖悦榕庄及阳澄湖悦柳酒店通过实施太阳能板项目等减排措施，使每间入住客房的碳排放减少了 22％，值得借鉴。</p>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
+                    <div class="text-center mb-4">
+                        <div class="w-16 h-16 bg-primary-light rounded-full flex items-center justify-center mx-auto mb-3">
+                            <i class="fa fa-lightbulb-o text-primary-dark text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">强化科技创新驱动</h3>
+                    </div>
+                    <p class="text-gray-700 text-sm">加大对智能能源管理系统、物联网技术、可再生能源等绿色技术的投入，提高绿色实践的效率和精准度。预计到 2025 年底，长三角地区 80% 的绿色酒店将采用智能能源管理系统，未采用的酒店将面临竞争劣势。</p>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
+                    <div class="text-center mb-4">
+                        <div class="w-16 h-16 bg-primary-light rounded-full flex items-center justify-center mx-auto mb-3">
+                            <i class="fa fa-heartbeat text-primary-dark text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">深化健康与绿色融合</h3>
+                    </div>
+                    <p class="text-gray-700 text-sm">将健康理念与绿色实践深度融合，提供更全面的健康住宿体验。这包括空气净化系统、健康餐饮、睡眠优化、心理健康服务等。康老板・氧吧酒店在这方面的成功经验值得借鉴，其在一线城市覆盖率已达到 100%。</p>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
+                    <div class="text-center mb-4">
+                        <div class="w-16 h-16 bg-primary-light rounded-full flex items-center justify-center mx-auto mb-3">
+                            <i class="fa fa-comments text-primary-dark text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">加强社区参与和文化融入</h3>
+                    </div>
+                    <p class="text-gray-700 text-sm">与当地社区建立紧密联系，融入地方文化元素，提供更多与社区互动的体验活动。这不仅能提升客人体验，还能促进当地社区发展，实现多方共赢。杭州中山国际大酒店 (杭州中山西子湖酒店) 等金树叶级绿色旅游饭店在这方面有丰富实践。</p>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
+                    <div class="text-center mb-4">
+                        <div class="w-16 h-16 bg-primary-light rounded-full flex items-center justify-center mx-auto mb-3">
+                            <i class="fa fa-handshake-o text-primary-dark text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">建立绿色酒店联盟</h3>
+                    </div>
+                    <p class="text-gray-700 text-sm">成立区域性绿色酒店联盟，促进信息共享、经验交流、资源整合，共同推动绿色酒店的发展。全国低碳酒店样板工程已开始探索这一方向，研究院联合行业协会、第三方检测机构及低碳配套服务商，形成 "诊断 - 优化 - 认证" 闭环。</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="section3" class="mb-24 animate-on-scroll">
+            <h2 class="text-[clamp(1.5rem,3vw,2rem)] font-bold text-primary mb-10 text-center">
+                6.3 对政策制定者的建议
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
+                    <div class="text-center mb-4">
+                        <div class="w-16 h-16 bg-accent rounded-full flex items-center justify-center mx-auto mb-3 text-white">
+                            <i class="fa fa-gavel text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">完善政策支持体系</h3>
+                    </div>
+                    <p class="text-gray-700 text-sm">制定更完善的财政、金融、土地等支持政策，鼓励酒店实施绿色改造。如上海对获评金级 "绿色旅游饭店" 的酒店给予最高 200 万元补贴，这类政策应进一步扩大和细化。</p>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
+                    <div class="text-center mb-4">
+                        <div class="w-16 h-16 bg-accent rounded-full flex items-center justify-center mx-auto mb-3 text-white">
+                            <i class="fa fa-balance-scale text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">统一绿色认证标准</h3>
+                    </div>
+                    <p class="text-gray-700 text-sm">整合现有多种绿色认证体系，建立统一、科学、可量化的绿色酒店评价标准。全国低碳酒店样板工程通过 60 余项细分指标定性评价与定量监测，为酒店提供持续改进的 "碳地图"，这一做法值得推广。</p>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
+                    <div class="text-center mb-4">
+                        <div class="w-16 h-16 bg-accent rounded-full flex items-center justify-center mx-auto mb-3 text-white">
+                            <i class="fa fa-share-alt text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">建立信息共享平台</h3>
+                    </div>
+                    <p class="text-gray-700 text-sm">建立区域性绿色酒店信息共享平台，公开绿色认证信息、最佳实践案例、技术解决方案等，促进知识传播和经验交流。</p>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
+                    <div class="text-center mb-4">
+                        <div class="w-16 h-16 bg-accent rounded-full flex items-center justify-center mx-auto mb-3 text-white">
+                            <i class="fa fa-eye text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">加强监督管理</h3>
+                    </div>
+                    <p class="text-gray-700 text-sm">建立健全绿色酒店的监督管理机制，确保绿色认证的真实性和有效性。全国绿色饭店工作委员会通过暗访、抽查和复审等方式对企业进行审查和定期督导，这一做法应进一步强化。</p>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
+                    <div class="text-center mb-4">
+                        <div class="w-16 h-16 bg-accent rounded-full flex items-center justify-center mx-auto mb-3 text-white">
+                            <i class="fa fa-graduation-cap text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">培育专业人才</h3>
+                    </div>
+                    <p class="text-gray-700 text-sm">加强绿色酒店专业人才的培养，提高从业人员的绿色意识和专业能力。建议在旅游院校设立绿色酒店相关课程，开展绿色酒店从业人员培训项目。</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="section4" class="mb-24 animate-on-scroll">
+            <h2 class="text-[clamp(1.5rem,3vw,2rem)] font-bold text-primary mb-10 text-center">
+                6.4 对消费者的建议
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
+                    <div class="text-center mb-4">
+                        <div class="w-16 h-16 bg-primary-light rounded-full flex items-center justify-center mx-auto mb-3">
+                            <i class="fa fa-check-square-o text-primary-dark text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">优先选择绿色酒店</h3>
+                    </div>
+                    <p class="text-gray-700 text-sm">在旅行时优先选择获得绿色认证的酒店，用消费行为支持可持续旅游发展。随着 ESG 筛选成为主流，超八成酒店预订将涉及 ESG 筛选，消费者的选择将直接影响酒店的绿色转型。</p>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
+                    <div class="text-center mb-4">
+                        <div class="w-16 h-16 bg-primary-light rounded-full flex items-center justify-center mx-auto mb-3">
+                            <i class="fa fa-hand-paper-o text-primary-dark text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">参与酒店绿色实践</h3>
+                    </div>
+                    <p class="text-gray-700 text-sm">积极参与酒店提供的绿色实践活动，如减少床单更换、参与垃圾分类、使用公共交通等，共同为环境保护贡献力量。</p>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
+                    <div class="text-center mb-4">
+                        <div class="w-16 h-16 bg-primary-light rounded-full flex items-center justify-center mx-auto mb-3">
+                            <i class="fa fa-comments-o text-primary-dark text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">提供反馈和建议</h3>
+                    </div>
+                    <p class="text-gray-700 text-sm">对入住的绿色酒店提出反馈和建议，帮助酒店不断改进绿色实践。消费者的反馈是推动酒店持续改进的重要动力。</p>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
+                    <div class="text-center mb-4">
+                        <div class="w-16 h-16 bg-primary-light rounded-full flex items-center justify-center mx-auto mb-3">
+                            <i class="fa fa-bullhorn text-primary-dark text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">传播绿色理念</h3>
+                    </div>
+                    <p class="text-gray-700 text-sm">向他人传播绿色酒店的理念和好处，提高公众对绿色酒店的认知和支持。随着体验经济与环保理念深度融合，基于 ESG 的服务创新将不断涌现，消费者的传播将加速这一进程。</p>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-lg p-6 card-hover col-span-full">
+                    <div class="text-center mb-4">
+                        <div class="w-16 h-16 bg-primary-light rounded-full flex items-center justify-center mx-auto mb-3">
+                            <i class="fa fa-globe text-primary-dark text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">关注全产业链绿色</h3>
+                    </div>
+                    <p class="text-gray-700 text-sm">不仅关注酒店自身的绿色实践，还应关注酒店的供应链、社区影响等全产业链的绿色表现，促进酒店实现更全面的可持续发展。</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const menuToggle = document.getElementById('menu-toggle');
+        const sideMenu = document.getElementById('side-menu');
+        const overlay = document.getElementById('overlay');
+
+        function toggleMenu() {
+            sideMenu.classList.toggle('open');
+            overlay.classList.toggle('visible');
+            menuToggle.classList.toggle('active');
+        }
+
+        menuToggle.addEventListener('click', toggleMenu);
+        overlay.addEventListener('click', toggleMenu);
+
+        const sideMenuLinks = document.querySelectorAll('#side-menu a');
+        sideMenuLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                if (sideMenu.classList.contains('open')) {
+                    setTimeout(() => {
+                        toggleMenu();
+                    }, 100); 
+                }
+            });
+        });
+        
+        // 滚动动画
+        const animateElements = document.querySelectorAll('.animate-on-scroll');
+        
+        function checkScroll() {
+            animateElements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const elementVisible = 150;
+                
+                if (elementTop < window.innerHeight - elementVisible) {
+                    element.classList.add('visible');
+                }
+            });
+        }
+        
+        window.addEventListener('scroll', checkScroll);
+        checkScroll(); // 初始检查
+        
+        // Note: Chart.js data fetching and initialization from chapter1.html are not relevant for chapter6.
+        // If chapter6 needs charts, new chart contexts and data structures would be defined here.
+    </script>
+</body>
+</html>

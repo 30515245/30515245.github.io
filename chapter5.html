@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第五章：江浙沪地区绿色酒店发展案例研究与经验总结</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#7abf18',
+                        'primary-dark': '#5A9E16',
+                        'primary-light': '#B5E673',
+                        accent: '#16A085',
+                        neutral: '#F0F8FF',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .text-shadow {
+                text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            .card-hover {
+                transition: all 0.3s ease;
+            }
+            .card-hover:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            }
+        }
+    </style>
+    
+    <style>
+        /* 动画效果 - 移除 fade-in 和 slide-in */
+        /* .fade-in {
+            animation: fadeIn 0.8s ease-in-out forwards;
+            opacity: 0;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .slide-in {
+            animation: slideIn 0.6s ease-out forwards;
+            opacity: 0;
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-30px); }
+            to { opacity: 1; transform: translateX(0); }
+        } */
+        
+        /* 导航动画 */
+        .nav-link {
+            position: relative;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background-color: #B5E673;
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        /* 滚动动画触发 - 移除初始 opacity 和 transform */
+        .animate-on-scroll {
+            /* opacity: 0; */ /* Removed */
+            /* transform: translateY(30px); */ /* Removed */
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            opacity: 1; /* Set to visible by default */
+            transform: translateY(0); /* Set to no translation by default */
+        }
+        
+        /* .animate-on-scroll.visible { */ /* This class is no longer needed for initial visibility */
+            /* opacity: 1; */
+            /* transform: translateY(0); */
+        /* } */
+        
+        /* 标题动画 */
+        .title-enter {
+            animation: titleEnter 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            /* transform: translateY(-50px); */ /* Initial state for animation */
+            /* opacity: 0; */ /* Initial state for animation */
+        }
+        
+        @keyframes titleEnter {
+            0% {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        /* 数字计数动画 */
+        .counter {
+            transition: all 2s ease-out;
+        }
+        
+        /* 流程图连接线 */
+        .flow-line {
+            position: absolute;
+            background-color: #7abf18;
+            z-index: 0;
+        }
+        
+        .flow-line-horizontal {
+            height: 2px;
+        }
+        
+        .flow-line-vertical {
+            width: 2px;
+        }
+
+        /* 汉堡菜单按钮样式 */
+        .menu-toggle {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            z-index: 50;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 30px;
+            height: 24px;
+            cursor: pointer;
+            padding: 5px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 5px;
+        }
+        .menu-toggle span {
+            display: block;
+            width: 100%;
+            height: 3px;
+            background-color: #5A9E16;
+            border-radius: 2px;
+            transition: all 0.3s ease-in-out;
+        }
+        .menu-toggle.active #line1 {
+            transform: translateY(10px) rotate(45deg);
+        }
+        .menu-toggle.active #line2 {
+            opacity: 0;
+        }
+        .menu-toggle.active #line3 {
+            transform: translateY(-10px) rotate(-45deg);
+        }
+        /* 侧边菜单样式 */
+        .side-menu {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 250px;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.98);
+            box-shadow: -5px 0 15px rgba(0,0,0,0.2);
+            transform: translateX(100%);
+            transition: transform 0.3s ease-out;
+            z-index: 40;
+            padding-top: 80px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            padding-left: 20px;
+        }
+        .side-menu.open {
+            transform: translateX(0);
+        }
+        .side-menu a {
+            color: #333;
+            padding: 10px 0;
+            text-decoration: none;
+            font-size: 1.1rem;
+            width: 100%;
+            border-bottom: 1px solid #eee;
+        }
+        .side-menu a:last-child {
+            border-bottom: none;
+        }
+        .side-menu a:hover {
+            color: #7abf18;
+        }
+        /* 遮罩层 */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 30;
+            display: none;
+        }
+        .overlay.visible {
+            display: block;
+        }
+    </style>
+</head>
+<body class="bg-neutral text-gray-800 font-sans">
+    <button id="menu-toggle" class="menu-toggle">
+        <span id="line1"></span>
+        <span id="line2"></span>
+        <span id="line3"></span>
+    </button>
+    <div id="side-menu" class="side-menu">
+        <a href="index.html">首页</a>
+        <a href="chapter1.html">第一章</a>
+        <a href="chapter2.html">第二章</a>
+        <a href="chapter3.html">第三章</a>
+        <a href="chapter4.html">第四章</a>
+        <a href="chapter5.html">第五章</a>
+        <a href="chapter6.html">第六章</a>
+        <a href="chapter7.html">第七章</a>
+        <a href="chapter8.html">关于我们</a>
+    </div>
+    <div id="overlay" class="overlay"></div>
+    
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <section class="mb-20 text-center title-enter">
+            <h1 class="text-[clamp(2.5rem,5vw,4rem)] font-bold text-primary-dark mb-4 text-shadow">
+                第五章：江浙沪地区绿色酒店发展案例研究与经验总结
+            </h1>
+            <div class="w-20 h-1 bg-accent mx-auto rounded-full"></div>
+        </section>
+        
+        <section id="section1" class="mb-24 animate-on-scroll">
+            <h2 class="text-[clamp(1.5rem,3vw,2rem)] font-bold text-primary mb-10 text-center">
+                5.1 典型案例分析
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover">
+                    <div class="relative h-60">
+                        <img src="https://picsum.photos/id/1048/800/600" alt="上海浦东丽思卡尔顿酒店" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end">
+                            <h3 class="text-2xl font-bold text-white p-6">上海浦东丽思卡尔顿酒店</h3>
+                        </div>
+                    </div>
+                    
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="bg-primary p-2 rounded-full mr-3">
+                                <i class="fa fa-star text-white"></i>
+                            </div>
+                            <h4 class="font-bold">高端奢华型绿色酒店</h4>
+                        </div>
+                        
+                        <p class="text-sm mb-4">上海浦东丽思卡尔顿酒店是高端奢华型绿色酒店的典型代表，位于上海陆家嘴金融贸易区，是中国首批获得LEED白金认证的酒店之一。</p>
+                        
+                        <div class="space-y-3">
+                            <div class="flex items-center">
+                                <i class="fa fa-check-circle text-primary mr-2"></i>
+                                <span class="text-sm">太阳能光伏发电系统，年发电量达150万千瓦时</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fa fa-check-circle text-primary mr-2"></i>
+                                <span class="text-sm">雨水收集系统，年节水2万吨</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fa fa-check-circle text-primary mr-2"></i>
+                                <span class="text-sm">有机餐厅，食材90%来自本地有机农场</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fa fa-check-circle text-primary mr-2"></i>
+                                <span class="text-sm">智能能源管理系统，降低能耗25%</span>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-6">
+                            <a href="#" class="inline-block bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-dark transition-colors">
+                                查看详情 <i class="fa fa-arrow-right ml-2"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover">
+                    <div class="relative h-60">
+                        <img src="https://picsum.photos/id/1056/800/600" alt="杭州西湖国宾馆" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end">
+                            <h3 class="text-2xl font-bold text-white p-6">杭州西湖国宾馆</h3>
+                        </div>
+                    </div>
+                    
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="bg-primary p-2 rounded-full mr-3">
+                                <i class="fa fa-leaf text-white"></i>
+                            </div>
+                            <h4 class="font-bold">文化遗产型绿色酒店</h4>
+                        </div>
+                        
+                        <p class="text-sm mb-4">杭州西湖国宾馆坐落于西湖核心景区，融合传统文化与现代环保理念，是文化遗产型绿色酒店的典范。</p>
+                        
+                        <div class="space-y-3">
+                            <div class="flex items-center">
+                                <i class="fa fa-check-circle text-primary mr-2"></i>
+                                <span class="text-sm">古建筑改造，保留传统建筑风貌</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fa fa-check-circle text-primary mr-2"></i>
+                                <span class="text-sm">地源热泵系统，实现高效供暖制冷</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fa fa-check-circle text-primary mr-2"></i>
+                                <span class="text-sm">本地食材供应链，支持区域农业发展</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fa fa-check-circle text-primary mr-2"></i>
+                                <span class="text-sm">文化遗产保护教育项目，提升宾客环保意识</span>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-6">
+                            <a href="#" class="inline-block bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-dark transition-colors">
+                                查看详情 <i class="fa fa-arrow-right ml-2"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover">
+                    <div class="relative h-60">
+                        <img src="https://picsum.photos/id/1060/800/600" alt="南京金陵饭店" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end">
+                            <h3 class="text-2xl font-bold text-white p-6">南京金陵饭店</h3>
+                        </div>
+                    </div>
+                    
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="bg-primary p-2 rounded-full mr-3">
+                                <i class="fa fa-building text-white"></i>
+                            </div>
+                            <h4 class="font-bold">城市商务型绿色酒店</h4>
+                        </div>
+                        
+                        <p class="text-sm mb-4">南京金陵饭店是城市商务型绿色酒店的代表，位于南京市中心，将绿色理念融入商务服务中。</p>
+                        
+                        <div class="space-y-3">
+                            <div class="flex items-center">
+                                <i class="fa fa-check-circle text-primary mr-2"></i>
+                                <span class="text-sm">LED智能照明系统，节能率达40%</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fa fa-check-circle text-primary mr-2"></i>
+                                <span class="text-sm">中水回用系统，用于绿化灌溉和厕所冲洗</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fa fa-check-circle text-primary mr-2"></i>
+                                <span class="text-sm">绿色会议服务，提供电子文档和可降解材料</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fa fa-check-circle text-primary mr-2"></i>
+                                <span class="text-sm">环保客房，使用有机棉织品和天然洗浴用品</span>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-6">
+                            <a href="#" class="inline-block bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-dark transition-colors">
+                                查看详情 <i class="fa fa-arrow-right ml-2"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-12 bg-white rounded-xl shadow-lg p-6 card-hover">
+                <h3 class="text-xl font-bold mb-6 text-center">绿色酒店典型案例对比分析</h3>
+                <div class="relative h-80 w-full"> 
+                    <canvas id="case-comparison-chart" class="absolute inset-0 w-full h-full"></canvas>
+                </div>
+            </div>
+        </section>
+        
+        <section id="section2" class="mb-24 animate-on-scroll">
+            <h2 class="text-[clamp(1.5rem,3vw,2rem)] font-bold text-primary mb-10 text-center">
+                5.2 经验总结
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-xl font-bold">成功经验</h3>
+                        <div class="bg-primary-light p-3 rounded-full">
+                            <i class="fa fa-thumbs-up text-primary-dark"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-6">
+                        <div class="flex">
+                            <div class="bg-primary-dark text-white rounded-full p-3 mr-4">
+                                <i class="fa fa-lightbulb-o text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-lg mb-2">明确的绿色战略</h4>
+                                <p class="text-sm">成功的绿色酒店都有明确的绿色发展战略和目标，并将其融入企业的整体发展战略中。</p>
+                            </div>
+                        </div>
+                        <div class="flex">
+                            <div class="bg-primary text-white rounded-full p-3 mr-4">
+                                <i class="fa fa-cogs text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-lg mb-2">技术创新支持</h4>
+                                <p class="text-sm">积极采用节能环保新技术，如太阳能、地源热泵、智能控制系统等，是绿色酒店成功的关键。</p>
+                            </div>
+                        </div>
+                        <div class="flex">
+                            <div class="bg-primary-light text-primary-dark rounded-full p-3 mr-4">
+                                <i class="fa fa-users text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-lg mb-2">员工与宾客参与</h4>
+                                <p class="text-sm">员工培训和宾客教育是绿色酒店成功实施的重要保障，通过激励机制提高参与度。</p>
+                            </div>
+                        </div>
+                        <div class="flex">
+                            <div class="bg-accent text-white rounded-full p-3 mr-4">
+                                <i class="fa fa-certificate text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-lg mb-2">认证与品牌建设</h4>
+                                <p class="text-sm">获得绿色认证，如LEED、国家绿色饭店等，有助于提升酒店品牌形象和市场竞争力。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-xl font-bold">绿色实践框架</h3>
+                        <div class="bg-primary-light p-3 rounded-full">
+                            <i class="fa fa-sitemap text-primary-dark"></i>
+                        </div>
+                    </div>
+                    <div class="relative h-80">
+                        <div class="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-primary rounded-full flex items-center justify-center text-white font-bold text-sm z-20">
+                            绿色酒店实践
+                        </div>
+                        <div class="flow-line flow-line-horizontal w-20 left-1/2 top-1/4 transform -translate-x-1/2 z-10"></div>
+                        <div class="flow-line flow-line-horizontal w-20 left-1/2 top-3/4 transform -translate-x-1/2 z-10"></div>
+                        <div class="flow-line flow-line-vertical h-20 left-1/4 top-1/2 transform -translate-y-1/2 z-10"></div>
+                        <div class="flow-line flow-line-vertical h-20 left-3/4 top-1/2 transform translate-x-1/2 -translate-y-1/2 z-10"></div>
+                        <div class="absolute left-1/2 top-1/4 transform -translate-x-1/2 -translate-y-1/2 w-40 bg-primary-dark text-white p-3 rounded-lg z-20 text-center">
+                            <h4 class="font-bold">战略层面</h4>
+                            <p class="text-xs">绿色发展战略规划</p>
+                        </div>
+                        <div class="absolute left-1/2 top-3/4 transform -translate-x-1/2 translate-y-1/2 w-40 bg-primary-dark text-white p-3 rounded-lg z-20 text-center">
+                            <h4 class="font-bold">运营层面</h4>
+                            <p class="text-xs">日常节能环保措施</p>
+                        </div>
+                        <div class="absolute left-1/4 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-40 bg-primary-dark text-white p-3 rounded-lg z-20 text-center">
+                            <h4 class="font-bold">技术层面</h4>
+                            <p class="text-xs">绿色技术应用</p>
+                        </div>
+                        <div class="absolute left-3/4 top-1/2 transform translate-x-1/2 -translate-y-1/2 w-40 bg-primary-dark text-white p-3 rounded-lg z-20 text-center">
+                            <h4 class="font-bold">管理层面</h4>
+                            <p class="text-xs">绿色供应链与认证</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-12 bg-white rounded-xl shadow-lg p-6 card-hover">
+                <h3 class="text-xl font-bold mb-6 text-center">江浙沪绿色酒店发展框架</h3>
+                <div class="relative h-80 w-full"> 
+                    <canvas id="development-framework-chart" class="absolute inset-0 w-full h-full"></canvas>
+                </div>
+            </div>
+        </section>
+        
+        <section id="section3" class="mb-24 animate-on-scroll">
+            <h2 class="text-[clamp(1.5rem,3vw,2rem)] font-bold text-primary mb-10 text-center">
+                5.3 挑战与问题
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-xl font-bold">成本与投资</h3>
+                        <div class="bg-red-200 text-red-700 p-3 rounded-full">
+                            <i class="fa fa-dollar text-xl"></i>
+                        </div>
+                    </div>
+                    <p class="text-sm">初期绿色技术投入成本高，回收期长，部分酒店缺乏投资意愿。</p>
+                </div>
+                <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-xl font-bold">技术瓶颈</h3>
+                        <div class="bg-yellow-200 text-yellow-700 p-3 rounded-full">
+                            <i class="fa fa-wrench text-xl"></i>
+                        </div>
+                    </div>
+                    <p class="text-sm">部分绿色技术尚未成熟，推广应用存在技术障碍和维护难题。</p>
+                </div>
+                <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-xl font-bold">政策法规不完善</h3>
+                        <div class="bg-blue-200 text-blue-700 p-3 rounded-full">
+                            <i class="fa fa-gavel text-xl"></i>
+                        </div>
+                    </div>
+                    <p class="text-sm">缺乏统一的绿色酒店评价标准和激励政策，市场监管不足。</p>
+                </div>
+                <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-xl font-bold">市场认知度低</h3>
+                        <div class="bg-green-200 text-green-700 p-3 rounded-full">
+                            <i class="fa fa-comments-o text-xl"></i>
+                        </div>
+                    </div>
+                    <p class="text-sm">消费者对绿色酒店的认知度不高，支付意愿不强，影响市场推广。</p>
+                </div>
+                <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-xl font-bold">供应链管理</h3>
+                        <div class="bg-purple-200 text-purple-700 p-3 rounded-full">
+                            <i class="fa fa-truck text-xl"></i>
+                        </div>
+                    </div>
+                    <p class="text-sm">绿色供应链建设难度大，难以确保所有环节的环保性。</p>
+                </div>
+                <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-xl font-bold">人才匮乏</h3>
+                        <div class="bg-orange-200 text-orange-700 p-3 rounded-full">
+                            <i class="fa fa-graduation-cap text-xl"></i>
+                        </div>
+                    </div>
+                    <p class="text-sm">缺乏专业的绿色酒店管理人才和技术人才，制约行业发展。</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="section4" class="mb-24 animate-on-scroll">
+            <h2 class="text-[clamp(1.5rem,3vw,2rem)] font-bold text-primary mb-10 text-center">
+                5.4 发展趋势
+            </h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="bg-white rounded-xl shadow-lg p-6 card-hover flex items-start space-x-4">
+                    <div class="bg-primary text-white p-3 rounded-full flex-shrink-0">
+                        <i class="fa fa-line-chart text-2xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold mb-2">技术驱动的深度融合</h3>
+                        <p class="text-sm">未来绿色酒店将更深入地融合物联网、大数据、人工智能等先进技术，实现能源管理、废弃物处理、水资源利用的智能化和精细化。</p>
+                    </div>
+                </div>
+                <div class="bg-white rounded-xl shadow-lg p-6 card-hover flex items-start space-x-4">
+                    <div class="bg-primary-dark text-white p-3 rounded-full flex-shrink-0">
+                        <i class="fa fa-users text-2xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold mb-2">个性化与沉浸式体验</h3>
+                        <p class="text-sm">绿色酒店将不再仅仅关注环保设施，更会注重为消费者提供个性化的绿色生活方式体验，如生态旅游、自然教育、健康餐饮等。</p>
+                    </div>
+                </div>
+                <div class="bg-white rounded-xl shadow-lg p-6 card-hover flex items-start space-x-4">
+                    <div class="bg-primary-light text-primary-dark p-3 rounded-full flex-shrink-0">
+                        <i class="fa fa-globe text-2xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold mb-2">全产业链的绿色转型</h3>
+                        <p class="text-sm">绿色发展将贯穿酒店设计、建造、运营、供应链等全生命周期，形成从源头到末端的绿色闭环。</p>
+                    </div>
+                </div>
+                <div class="bg-white rounded-xl shadow-lg p-6 card-hover flex items-start space-x-4">
+                    <div class="bg-accent text-white p-3 rounded-full flex-shrink-0">
+                        <i class="fa fa-handshake-o text-2xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold mb-2">合作与共享模式创新</h3>
+                        <p class="text-sm">酒店将加强与地方政府、环保组织、科研机构及社区的合作，共同推动绿色旅游生态圈的建设，并探索共享经济模式在绿色酒店中的应用。</p>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-12 bg-white rounded-xl shadow-lg p-6 card-hover">
+                <h3 class="text-xl font-bold mb-6 text-center">未来五年江浙沪地区绿色酒店发展趋势预测</h3>
+                <div class="relative h-80 w-full">
+                    <canvas id="future-trend-chart" class="absolute inset-0 w-full h-full"></canvas>
+                </div>
+            </div>
+        </section>
+        
+        <section id="section5" class="mb-24 animate-on-scroll">
+            <h2 class="text-[clamp(1.5rem,3vw,2rem)] font-bold text-primary mb-10 text-center">
+                5.5 政策建议
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-white rounded-xl shadow-lg p-6 card-hover flex items-start space-x-4">
+                    <div class="bg-primary text-white p-3 rounded-full flex-shrink-0">
+                        <i class="fa fa-balance-scale text-2xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold mb-2">完善法规与标准体系</h3>
+                        <p class="text-sm">制定更具体的绿色酒店建设与运营标准，建立健全的认证与退出机制，确保行业规范发展。</p>
+                    </div>
+                </div>
+                <div class="bg-white rounded-xl shadow-lg p-6 card-hover flex items-start space-x-4">
+                    <div class="bg-primary-dark text-white p-3 rounded-full flex-shrink-0">
+                        <i class="fa fa-line-chart text-2xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold mb-2">加大财政与金融支持</h3>
+                        <p class="text-sm">设立绿色酒店发展专项基金，提供低息贷款、税收优惠等政策，鼓励酒店进行绿色改造和技术升级。</p>
+                    </div>
+                </div>
+                <div class="bg-white rounded-xl shadow-lg p-6 card-hover flex items-start space-x-4">
+                    <div class="bg-primary-light text-primary-dark p-3 rounded-full flex-shrink-0">
+                        <i class="fa fa-lightbulb-o text-2xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold mb-2">推广绿色技术与创新</h3>
+                        <p class="text-sm">建立绿色技术推广平台，鼓励产学研合作，推动绿色建材、节能设备、智慧管理系统等在酒店行业的应用。</p>
+                    </div>
+                </div>
+                <div class="bg-white rounded-xl shadow-lg p-6 card-hover flex items-start space-x-4">
+                    <div class="bg-accent text-white p-3 rounded-full flex-shrink-0">
+                        <i class="fa fa-bullhorn text-2xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold mb-2">强化市场引导与宣传</h3>
+                        <p class="text-sm">通过媒体宣传、旅游推广等方式，提升消费者对绿色酒店的认知度和认可度，培育绿色消费市场。</p>
+                    </div>
+                </div>
+                <div class="bg-white rounded-xl shadow-lg p-6 card-hover flex items-start space-x-4">
+                    <div class="bg-neutral text-gray-800 p-3 rounded-full flex-shrink-0">
+                        <i class="fa fa-graduation-cap text-2xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold mb-2">构建人才培养体系</h3>
+                        <p class="text-sm">支持高校和职业学校开设绿色酒店管理相关专业，培养复合型人才，满足行业发展需求。</p>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-12 bg-white rounded-xl shadow-lg p-6 card-hover">
+                <h3 class="text-xl font-bold mb-6 text-center">政策建议框架</h3>
+                <div class="relative h-80 w-full"> 
+                    <canvas id="policy-suggestions-chart" class="absolute inset-0 w-full h-full"></canvas>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Hamburger menu script from user's provided code
+        const menuToggle = document.getElementById('menu-toggle');
+        const sideMenu = document.getElementById('side-menu');
+        const overlay = document.getElementById('overlay');
+        function toggleMenu() {
+            sideMenu.classList.toggle('open');
+            overlay.classList.toggle('visible');
+            menuToggle.classList.toggle('active');
+        }
+        menuToggle.addEventListener('click', toggleMenu);
+        overlay.addEventListener('click', toggleMenu);
+        const sideMenuLinks = document.querySelectorAll('#side-menu a');
+        sideMenuLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                if (sideMenu.classList.contains('open')) {
+                    setTimeout(() => {
+                        toggleMenu();
+                    }, 100);
+                }
+            });
+        });
+
+        // Existing chart initialization script
+        document.addEventListener('DOMContentLoaded', renderCharts);
+
+        function renderCharts() {
+            // Function for 5.1 Typical Case Analysis Chart
+            const caseComparisonCtx = document.getElementById('case-comparison-chart');
+            if (caseComparisonCtx) {
+                new Chart(caseComparisonCtx, {
+                    type: 'radar',
+                    data: {
+                        labels: ['能源效率', '水资源管理', '废弃物处理', '绿色采购', '社会责任'],
+                        datasets: [
+                            {
+                                label: '上海浦东丽思卡尔顿酒店',
+                                data: [90, 85, 80, 75, 70],
+                                fill: true,
+                                backgroundColor: 'rgba(122, 191, 24, 0.2)',
+                                borderColor: '#7abf18',
+                                pointBackgroundColor: '#7abf18',
+                                pointBorderColor: '#fff',
+                                pointHoverBackgroundColor: '#fff',
+                                pointHoverBorderColor: '#7abf18'
+                            },
+                            {
+                                label: '杭州西湖国宾馆',
+                                data: [80, 90, 75, 85, 95],
+                                fill: true,
+                                backgroundColor: 'rgba(22, 160, 133, 0.2)',
+                                borderColor: '#16A085',
+                                pointBackgroundColor: '#16A085',
+                                pointBorderColor: '#fff',
+                                pointHoverBackgroundColor: '#fff',
+                                pointHoverBorderColor: '#16A085'
+                            },
+                            {
+                                label: '南京金陵饭店',
+                                data: [75, 80, 90, 80, 85],
+                                fill: true,
+                                backgroundColor: 'rgba(90, 158, 22, 0.2)',
+                                borderColor: '#5A9E16',
+                                pointBackgroundColor: '#5A9E16',
+                                pointBorderColor: '#fff',
+                                pointHoverBackgroundColor: '#fff',
+                                pointHoverBorderColor: '#5A9E16'
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            r: {
+                                angleLines: {
+                                    display: true
+                                },
+                                suggestedMin: 0,
+                                suggestedMax: 100
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                            },
+                            title: {
+                                display: false,
+                                text: '绿色酒店典型案例对比分析'
+                            }
+                        }
+                    }
+                });
+            } else {
+                console.error("Canvas element 'case-comparison-chart' not found.");
+            }
+
+            // Function for 5.2 Development Framework Chart
+            const developmentFrameworkCtx = document.getElementById('development-framework-chart');
+            if (developmentFrameworkCtx) {
+                new Chart(developmentFrameworkCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['绿色战略', '技术创新', '员工与宾客参与', '认证与品牌建设'],
+                        datasets: [{
+                            label: '重要性得分',
+                            data: [90, 85, 80, 95],
+                            backgroundColor: ['#7abf18', '#5A9E16', '#B5E673', '#16A085'],
+                            borderColor: ['#7abf18', '#5A9E16', '#B5E673', '#16A085'],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                max: 100,
+                                title: {
+                                    display: true,
+                                    text: '得分'
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            title: {
+                                display: false,
+                                text: '江浙沪绿色酒店发展框架'
+                            }
+                        }
+                    }
+                });
+            } else {
+                console.error("Canvas element 'development-framework-chart' not found.");
+            }
+
+            // Function for 5.4 Future Trend Chart
+            const futureTrendCtx = document.getElementById('future-trend-chart');
+            if (futureTrendCtx) {
+                new Chart(futureTrendCtx, {
+                    type: 'line',
+                    data: {
+                        labels: ['2024', '2025', '2026', '2027', '2028'],
+                        datasets: [
+                            {
+                                label: '绿色技术应用率 (%)',
+                                data: [60, 65, 70, 75, 80],
+                                borderColor: '#7abf18',
+                                backgroundColor: 'rgba(122, 191, 24, 0.2)',
+                                fill: true,
+                                tension: 0.3
+                            },
+                            {
+                                label: '消费者绿色酒店选择意愿 (%)',
+                                data: [50, 55, 60, 65, 70],
+                                borderColor: '#16A085',
+                                backgroundColor: 'rgba(22, 160, 133, 0.2)',
+                                fill: true,
+                                tension: 0.3
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            title: {
+                                display: false,
+                                text: '未来五年江浙沪地区绿色酒店发展趋势预测'
+                            },
+                            tooltip: {
+                                mode: 'index',
+                                intersect: false,
+                            },
+                        },
+                        hover: {
+                            mode: 'nearest',
+                            intersect: true
+                        },
+                        scales: {
+                            x: {
+                                display: true,
+                                title: {
+                                    display: true,
+                                    text: '年份'
+                                }
+                            },
+                            y: {
+                                display: true,
+                                title: {
+                                    display: true,
+                                    text: '数值'
+                                }
+                            }
+                        }
+                    }
+                });
+            } else {
+                console.error("Canvas element 'future-trend-chart' not found.");
+            }
+
+            // Function for 5.5 Policy Suggestions Chart
+            const policySuggestionsCtx = document.getElementById('policy-suggestions-chart');
+            if (policySuggestionsCtx) {
+                new Chart(policySuggestionsCtx, {
+                    type: 'polarArea',
+                    data: {
+                        labels: ['完善法规', '财政金融支持', '推广技术', '市场引导', '人才培养'],
+                        datasets: [{
+                            data: [85, 90, 80, 75, 70],
+                            backgroundColor: [
+                                '#7abf18',
+                                '#5A9E16',
+                                '#B5E673',
+                                '#16A085',
+                                '#d1e7a9'
+                            ],
+                            borderColor: '#fff',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'right'
+                            },
+                            title: {
+                                display: false,
+                                text: '政策建议框架'
+                            }
+                        },
+                        scales: {
+                            r: {
+                                suggestedMin: 0,
+                                suggestedMax: 100
+                            }
+                        }
+                    }
+                });
+            } else {
+                console.error("Canvas element 'policy-suggestions-chart' not found.");
+            }
+        }
+    </script>
+</body>
+</html>
