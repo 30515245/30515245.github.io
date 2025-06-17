@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第二章：江浙沪地区绿色酒店发展现状</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#7abf18',
+                        'primary-dark': '#5A9E16',
+                        'primary-light': '#B5E673',
+                        accent: '#16A085',
+                        neutral: '#F0F8FF',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .text-shadow {
+                text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            .card-hover {
+                transition: all 0.3s ease;
+            }
+            .card-hover:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            }
+        }
+    </style>
+    
+    <style>
+        /* 动画效果 */
+        .fade-in {
+            animation: fadeIn 0.8s ease-in-out forwards;
+            opacity: 0;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .slide-in {
+            animation: slideIn 0.6s ease-out forwards;
+            opacity: 0;
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        /* 导航动画 */
+        .nav-link {
+            position: relative;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background-color: #B5E673;
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        /* 滚动动画触发 */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        
+        .animate-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* 标题动画 */
+        .title-enter {
+            animation: titleEnter 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            transform: translateY(-50px);
+            opacity: 0;
+        }
+        
+        @keyframes titleEnter {
+            0% {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        /* 数字计数动画 */
+        .counter {
+            transition: all 2s ease-out;
+        }
+        
+        /* 图表容器 */
+        .chart-container {
+            position: relative;
+            height: 100%;
+            min-height: 300px;
+        }
+        
+        /* New hamburger menu styles */
+        .menu-toggle {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            z-index: 50;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 30px;
+            height: 24px;
+            cursor: pointer;
+            padding: 5px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 5px;
+        }
+        .menu-toggle span {
+            display: block;
+            width: 100%;
+            height: 3px;
+            background-color: #5A9E16;
+            border-radius: 2px;
+            transition: all 0.3s ease-in-out;
+        }
+        .menu-toggle.active #line1 {
+            transform: translateY(10px) rotate(45deg);
+        }
+        .menu-toggle.active #line2 {
+            opacity: 0;
+        }
+        .menu-toggle.active #line3 {
+            transform: translateY(-10px) rotate(-45deg);
+        }
+
+        .side-menu {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 250px;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.98);
+            box-shadow: -5px 0 15px rgba(0,0,0,0.2);
+            transform: translateX(100%);
+            transition: transform 0.3s ease-out;
+            z-index: 40;
+            padding-top: 80px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            padding-left: 20px;
+        }
+        .side-menu.open {
+            transform: translateX(0);
+        }
+        .side-menu a {
+            color: #333;
+            padding: 10px 0;
+            text-decoration: none;
+            font-size: 1.1rem;
+            width: 100%;
+            border-bottom: 1px solid #eee;
+        }
+        .side-menu a:last-child {
+            border-bottom: none;
+        }
+        .side-menu a:hover {
+            color: #7abf18;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 30;
+            display: none;
+        }
+        .overlay.visible {
+            display: block;
+        }
+    </style>
+</head>
+<body class="bg-neutral text-gray-800 font-sans">
+    <button id="menu-toggle" class="menu-toggle">
+        <span id="line1"></span>
+        <span id="line2"></span>
+        <span id="line3"></span>
+    </button>
+
+    <div id="side-menu" class="side-menu">
+        <a href="index.html">首页</a>
+        <a href="chapter1.html">第一章</a>
+        <a href="chapter2.html">第二章</a>
+        <a href="chapter3.html">第三章</a>
+        <a href="chapter4.html">第四章</a>
+        <a href="chapter5.html">第五章</a>
+        <a href="chapter6.html">第六章</a>
+        <a href="chapter7.html">第七章</a>
+        <a href="chapter8.html">关于我们</a>
+    </div>
+
+    <div id="overlay" class="overlay"></div>
+    
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <section class="mb-20 text-center title-enter">
+            <h1 class="text-[clamp(2.5rem,5vw,4rem)] font-bold text-primary-dark mb-4 text-shadow">
+                第二章：江浙沪地区绿色酒店发展现状
+            </h1>
+            <div class="w-20 h-1 bg-accent mx-auto rounded-full"></div>
+        </section>
+        
+        <section id="section1" class="mb-24 animate-on-scroll">
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                <div class="md:flex">
+                    <div class="md:w-1/2 p-8 fade-in" style="animation-delay: 0.3s">
+                        <h2 class="text-[clamp(1.5rem,3vw,2rem)] font-bold text-primary mb-6">
+                            2.1 总体发展概况
+                        </h2>
+                        
+                        <div class="space-y-6">
+                            <p class="text-lg">江浙沪地区作为中国经济最发达的区域之一，在绿色酒店发展方面处于全国领先地位。近年来，随着环保意识的提高和政策支持力度的加大，该地区绿色酒店数量呈现快速增长态势。</p>
+                            
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="bg-primary-light/30 p-4 rounded-lg">
+                                    <div class="text-4xl font-bold text-primary-dark counter" data-target="644">0</div>
+                                    <div class="text-sm">绿色酒店总数（截至2025年）</div>
+                                </div>
+                                
+                                <div class="bg-primary-light/30 p-4 rounded-lg">
+                                    <div class="text-4xl font-bold text-primary-dark counter" data-target="35">0</div>
+                                    <div class="text-sm">占全国绿色酒店比例(%)</div>
+                                </div>
+                                
+                                <div class="bg-primary-light/30 p-4 rounded-lg">
+                                    <div class="text-4xl font-bold text-primary-dark counter" data-target="18">0</div>
+                                    <div class="text-sm">年增长率(%)</div>
+                                </div>
+                                
+                                <div class="bg-primary-light/30 p-4 rounded-lg">
+                                    <div class="text-4xl font-bold text-primary-dark counter" data-target="4.2">0</div>
+                                    <div class="text-sm">投资规模(十亿元)</div>
+                                </div>
+                            </div>
+                            
+                            <p>绿色酒店的发展不仅体现在数量的增长上，更体现在质量的提升上。越来越多的酒店开始采用先进的环保技术和管理理念，从能源管理、水资源利用、废弃物处理到绿色供应链建设，全方位推进可持续发展。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="md:w-1/2 bg-primary-dark p-8 text-white slide-in" style="animation-delay: 0.5s">
+                        <h3 class="text-xl font-bold mb-6">绿色酒店发展历程</h3>
+                        
+                        <div class="relative">
+                            <div class="absolute left-4 top-0 bottom-0 w-0.5 bg-white/30"></div>
+                            
+                            <div class="space-y-8">
+                                <div class="relative pl-12">
+                                    <div class="absolute left-0 top-1 w-6 h-6 bg-primary rounded-full flex items-center justify-center">
+                                        <i class="fa fa-seedling text-xs"></i>
+                                    </div>
+                                    <h4 class="font-bold text-lg mb-2">起步阶段(2000-2010)</h4>
+                                    <p class="text-sm">少数高端酒店开始尝试绿色实践，主要集中在节能和减少一次性用品使用方面。</p>
+                                </div>
+                                
+                                <div class="relative pl-12">
+                                    <div class="absolute left-0 top-1 w-6 h-6 bg-primary rounded-full flex items-center justify-center">
+                                        <i class="fa fa-leaf text-xs"></i>
+                                    </div>
+                                    <h4 class="font-bold text-lg mb-2">发展阶段(2011-2015)</h4>
+                                    <p class="text-sm">政府开始出台相关政策支持绿色酒店发展，行业标准逐渐建立，绿色酒店数量稳步增长。</p>
+                                </div>
+                                
+                                <div class="relative pl-12">
+                                    <div class="absolute left-0 top-1 w-6 h-6 bg-primary rounded-full flex items-center justify-center">
+                                        <i class="fa fa-tree text-xs"></i>
+                                    </div>
+                                    <h4 class="font-bold text-lg mb-2">快速发展阶段(2016-2020)</h4>
+                                    <p class="text-sm">环保意识普及，消费者对绿色酒店需求增加，技术进步推动绿色实践深入发展。</p>
+                                </div>
+                                
+                                <div class="relative pl-12">
+                                    <div class="absolute left-0 top-1 w-6 h-6 bg-primary rounded-full flex items-center justify-center">
+                                        <i class="fa fa-globe text-xs"></i>
+                                    </div>
+                                    <h4 class="font-bold text-lg mb-2">创新升级阶段(2021-至今)</h4>
+                                    <p class="text-sm">绿色酒店发展进入新阶段，智能化、数字化技术广泛应用，碳中和成为新目标。</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="section2" class="mb-24 animate-on-scroll">
+            <h2 class="text-[clamp(1.5rem,3vw,2rem)] font-bold text-primary mb-10 text-center">
+                2.2 区域分布特征
+            </h2>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover">
+                    <div class="relative h-60">
+                        <img src="https://picsum.photos/id/1031/800/600" alt="上海城市景观" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end">
+                            <h3 class="text-2xl font-bold text-white p-6">上海</h3>
+                        </div>
+                    </div>
+                    
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="w-3 h-3 bg-primary rounded-full mr-2"></div>
+                            <span class="font-bold">245家绿色酒店</span>
+                        </div>
+                        <p class="mb-4">作为国际化大都市，上海在绿色酒店发展方面处于领先地位，高星级绿色酒店集中，技术创新应用广泛。</p>
+                        
+                        <div class="grid grid-cols-2 gap-2">
+                            <div class="bg-primary-light/30 p-3 rounded-lg text-center">
+                                <div class="text-2xl font-bold text-primary-dark">45%</div>
+                                <div class="text-xs">高星级占比</div>
+                            </div>
+                            <div class="bg-primary-light/30 p-3 rounded-lg text-center">
+                                <div class="text-2xl font-bold text-primary-dark">85%</div>
+                                <div class="text-xs">认证覆盖率</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover">
+                    <div class="relative h-60">
+                        <img src="https://picsum.photos/id/1043/800/600" alt="江苏城市景观" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end">
+                            <h3 class="text-2xl font-bold text-white p-6">江苏</h3>
+                        </div>
+                    </div>
+                    
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="w-3 h-3 bg-primary rounded-full mr-2"></div>
+                            <span class="font-bold">187家绿色酒店</span>
+                        </div>
+                        <p class="mb-4">江苏绿色酒店发展均衡，南京、苏州、无锡等城市均有较多分布，中端绿色酒店发展迅速。</p>
+                        
+                        <div class="grid grid-cols-2 gap-2">
+                            <div class="bg-primary-light/30 p-3 rounded-lg text-center">
+                                <div class="text-2xl font-bold text-primary-dark">38%</div>
+                                <div class="text-xs">高星级占比</div>
+                            </div>
+                            <div class="bg-primary-light/30 p-3 rounded-lg text-center">
+                                <div class="text-2xl font-bold text-primary-dark">78%</div>
+                                <div class="text-xs">认证覆盖率</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover">
+                    <div class="relative h-60">
+                        <img src="https://picsum.photos/id/1058/800/600" alt="浙江城市景观" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end">
+                            <h3 class="text-2xl font-bold text-white p-6">浙江</h3>
+                        </div>
+                    </div>
+                    
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="w-3 h-3 bg-primary rounded-full mr-2"></div>
+                            <span class="font-bold">212家绿色酒店</span>
+                        </div>
+                        <p class="mb-4">浙江依托丰富的旅游资源，绿色酒店与文旅产业深度融合，乡村绿色酒店特色鲜明。</p>
+                        
+                        <div class="grid grid-cols-2 gap-2">
+                            <div class="bg-primary-light/30 p-3 rounded-lg text-center">
+                                <div class="text-2xl font-bold text-primary-dark">42%</div>
+                                <div class="text-xs">高星级占比</div>
+                            </div>
+                            <div class="bg-primary-light/30 p-3 rounded-lg text-center">
+                                <div class="text-2xl font-bold text-primary-dark">82%</div>
+                                <div class="text-xs">认证覆盖率</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-12 bg-white rounded-xl shadow-lg p-6 card-hover">
+                <h3 class="text-xl font-bold mb-6 text-center">江浙沪三地绿色酒店区域分布对比</h3>
+                <div class="chart-container">
+                    <canvas id="regional-distribution-chart"></canvas>
+                </div>
+            </div>
+        </section>
+        
+        <section id="section3" class="mb-24 animate-on-scroll">
+            <h2 class="text-[clamp(1.5rem,3vw,2rem)] font-bold text-primary mb-10 text-center">
+                2.3 星级结构分析
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-xl font-bold">星级分布</h3>
+                        <div class="bg-primary-light p-3 rounded-full">
+                            <i class="fa fa-star text-primary-dark"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-container">
+                        <canvas id="star-rating-chart"></canvas>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
+                    <h3 class="text-xl font-bold mb-6">各星级绿色实践特点</h3>
+                    
+                    <div class="space-y-6">
+                        <div class="flex">
+                            <div class="bg-primary-dark text-white rounded-full p-3 mr-4">
+                                <i class="fa fa-star text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-lg mb-2">五星级酒店</h4>
+                                <ul class="space-y-1">
+                                    <li>• 全面实施绿色管理，环保技术应用广泛</li>
+                                    <li>• 高比例获得国际认证，如LEED</li>
+                                    <li>• 注重绿色供应链建设</li>
+                                    <li>• 提供高端绿色体验服务</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="flex">
+                            <div class="bg-primary text-white rounded-full p-3 mr-4">
+                                <i class="fa fa-star text-xl"></i>
+                                <i class="fa fa-star text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-lg mb-2">四星级酒店</h4>
+                                <ul class="space-y-1">
+                                    <li>• 重点领域实施绿色措施，如节能、节水</li>
+                                    <li>• 积极参与国内绿色认证</li>
+                                    <li>• 智能化管理提升效率</li>
+                                    <li>• 平衡成本与绿色投入</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="flex">
+                            <div class="bg-primary-light text-primary-dark rounded-full p-3 mr-4">
+                                <i class="fa fa-star text-xl"></i>
+                                <i class="fa fa-star text-xl"></i>
+                                <i class="fa fa-star text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-lg mb-2">三星级及以下酒店</h4>
+                                <ul class="space-y-1">
+                                    <li>• 基础绿色措施为主，如减少一次性用品</li>
+                                    <li>• 逐步引入节能设备</li>
+                                    <li>• 注重实用主义，控制成本</li>
+                                    <li>• 社区参与度较高</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-12 bg-white rounded-xl shadow-lg p-6 card-hover">
+                <h3 class="text-xl font-bold mb-6 text-center">不同星级酒店绿色实践对比</h3>
+                <div class="chart-container">
+                    <canvas id="star-comparison-chart"></canvas>
+                </div>
+            </div>
+        </section>
+        
+        <section id="section4" class="mb-24 animate-on-scroll">
+            <h2 class="text-[clamp(1.5rem,3vw,2rem)] font-bold text-primary mb-10 text-center">
+                2.4 认证情况与标准
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-xl font-bold">认证情况</h3>
+                        <div class="bg-primary-light p-3 rounded-full">
+                            <i class="fa fa-certificate text-primary-dark"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-container">
+                        <canvas id="certification-chart"></canvas>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
+                    <h3 class="text-xl font-bold mb-6">主要认证标准</h3>
+                    
+                    <div class="space-y-4">
+                        <div class="border-l-4 border-primary pl-4 py-2">
+                            <h4 class="font-bold text-lg mb-1">绿色旅游饭店</h4>
+                            <p class="text-sm">由中国旅游饭店业协会推出的认证体系，分为金叶级和银叶级，评估酒店在环保、健康、安全等方面的表现。</p>
+                        </div>
+                        
+                        <div class="border-l-4 border-primary pl-4 py-2">
+                            <h4 class="font-bold text-lg mb-1">国家标准绿色饭店</h4>
+                            <p class="text-sm">由国家商务部和环保部联合制定的标准，分为5H、4H、3H三个等级，涵盖酒店运营的各个环节。</p>
+                        </div>
+                        
+                        <div class="border-l-4 border-primary pl-4 py-2">
+                            <h4 class="font-bold text-lg mb-1">LEED认证</h4>
+                            <p class="text-sm">由美国绿色建筑委员会(USGBC)推出的绿色建筑认证体系，在国际上具有广泛影响力，评估建筑的可持续性。</p>
+                        </div>
+                        
+                        <div class="border-l-4 border-primary pl-4 py-2">
+                            <h4 class="font-bold text-lg mb-1">其他认证</h4>
+                            <p class="text-sm">包括ISO 14001环境管理体系认证、碳中和认证、中国饭店协会绿色饭店认证等。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-12 bg-white rounded-xl shadow-lg p-6 card-hover">
+                <h3 class="text-xl font-bold mb-6 text-center">主要认证标准对比</h3>
+                
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead>
+                            <tr>
+                                <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">认证标准</th>
+                                <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">颁发机构</th>
+                                <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">评估维度</th>
+                                <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">等级划分</th>
+                                <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">有效期</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm font-medium text-gray-900">绿色旅游饭店</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-gray-900">中国旅游饭店业协会</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-gray-900">能源、水资源、废弃物、室内环境等</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-gray-900">金叶级、银叶级</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-gray-900">5年</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm font-medium text-gray-900">国家标准绿色饭店</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-gray-900">国家商务部、环保部</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-gray-900">规划设计、能源利用、环境保护等</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-gray-900">5H、4H、3H</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-gray-900">3年</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm font-medium text-gray-900">LEED认证</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-gray-900">美国绿色建筑委员会(USGBC)</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-gray-900">可持续场地、水资源利用、能源与大气等</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-gray-900">认证级、银级、金级、铂金级</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-gray-900">永久有效</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+        
+        <section id="section5" class="mb-24 animate-on-scroll">
+            <h2 class="text-[clamp(1.5rem,3vw,2rem)] font-bold text-primary mb-10 text-center">
+                2.5 典型案例分析
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover">
+                    <div class="relative h-56">
+                        <img src="https://picsum.photos/id/1048/800/600" alt="高端绿色酒店案例" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end">
+                            <h3 class="text-xl font-bold text-white p-4">上海某五星级酒店</h3>
+                        </div>
+                    </div>
+                    
+                    <div class="p-6">
+                        <div class="flex items-center mb-3">
+                            <span class="bg-primary-dark text-white text-xs px-2 py-1 rounded">高端绿色酒店</span>
+                            <span class="ml-auto text-sm text-gray-500">LEED铂金认证</span>
+                        </div>
+                        
+                        <h4 class="font-bold mb-3">绿色亮点</h4>
+                        <ul class="space-y-2 text-sm">
+                            <li>• 太阳能光伏发电系统，满足30%能源需求</li>
+                            <li>• 雨水收集系统，用于灌溉和景观用水</li>
+                            <li>• 智能能源管理系统，降低能耗25%</li>
+                            <li>• 100%使用环保清洁用品</li>
+                            <li>• 有机餐厅，食材本地采购率达70%</li>
+                        </ul>
+                        
+                        <div class="mt-4 pt-4 border-t border-gray-100">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs text-gray-500">投资回报期</span>
+                                <span class="font-bold">4.5年</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2 mt-2">
+                                <div class="bg-primary h-2 rounded-full" style="width: 75%"></div>
+                            </div>
+                            <div class="flex justify-between mt-1">
+                                <span class="text-xs text-gray-500">节能率</span>
+                                <span class="text-xs font-bold">75%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover">
+                    <div class="relative h-56">
+                        <img src="https://picsum.photos/id/1040/800/600" alt="中端绿色酒店案例" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end">
+                            <h3 class="text-xl font-bold text-white p-4">杭州某四星级酒店</h3>
+                        </div>
+                    </div>
+                    
+                    <div class="p-6">
+                        <div class="flex items-center mb-3">
+                            <span class="bg-primary text-white text-xs px-2 py-1 rounded">中端绿色酒店</span>
+                            <span class="ml-auto text-sm text-gray-500">金叶级绿色旅游饭店</span>
+                        </div>
+                        
+                        <h4 class="font-bold mb-3">绿色亮点</h4>
+                        <ul class="space-y-2 text-sm">
+                            <li>• LED照明系统，节能60%</li>
+                            <li>• 智能马桶与节水设备，节水40%</li>
+                            <li>• 中央空调节能改造，降低能耗18%</li>
+                            <li>• 客房环保提示系统，减少资源浪费</li>
+                            <li>• 电子发票与无纸化办公</li>
+                        </ul>
+                        
+                        <div class="mt-4 pt-4 border-t border-gray-100">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs text-gray-500">投资回报期</span>
+                                <span class="font-bold">2.8年</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2 mt-2">
+                                <div class="bg-primary h-2 rounded-full" style="width: 60%"></div>
+                            </div>
+                            <div class="flex justify-between mt-1">
+                                <span class="text-xs text-gray-500">节能率</span>
+                                <span class="text-xs font-bold">60%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover">
+                    <div class="relative h-56">
+                        <img src="https://picsum.photos/id/1060/800/600" alt="经济型绿色酒店案例" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end">
+                            <h3 class="text-xl font-bold text-white p-4">苏州某三星级酒店</h3>
+                        </div>
+                    </div>
+                    
+                    <div class="p-6">
+                        <div class="flex items-center mb-3">
+                            <span class="bg-primary-light text-primary-dark text-xs px-2 py-1 rounded">经济型绿色酒店</span>
+                            <span class="ml-auto text-sm text-gray-500">银叶级绿色旅游饭店</span>
+                        </div>
+                        
+                        <h4 class="font-bold mb-3">绿色亮点</h4>
+                        <ul class="space-y-2 text-sm">
+                            <li>• 淘汰一次性用品，提供可重复使用产品</li>
+                            <li>• 节能型电器设备，降低能耗20%</li>
+                            <li>• 垃圾分类与回收系统</li>
+                            <li>• 与本地农场合作，提供有机早餐</li>
+                            <li>• 员工环保培训与激励机制</li>
+                        </ul>
+                        
+                        <div class="mt-4 pt-4 border-t border-gray-100">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs text-gray-500">投资回报期</span>
+                                <span class="font-bold">1.5年</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2 mt-2">
+                                <div class="bg-primary h-2 rounded-full" style="width: 45%"></div>
+                            </div>
+                            <div class="flex justify-between mt-1">
+                                <span class="text-xs text-gray-500">节能率</span>
+                                <span class="text-xs font-bold">45%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-12 bg-white rounded-xl shadow-lg p-6 card-hover">
+                <h3 class="text-xl font-bold mb-6 text-center">不同星级绿色酒店案例对比</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-primary-light/20 rounded-lg p-6">
+                        <h4 class="font-bold text-lg mb-4 text-center">高端绿色酒店</h4>
+                        <ul class="space-y-2">
+                            <li class="flex items-center">
+                                <i class="fa fa-check text-primary mr-2"></i>
+                                <span>高投入，高技术应用</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fa fa-check text-primary mr-2"></i>
+                                <span>全面绿色管理</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fa fa-check text-primary mr-2"></i>
+                                <span>国际认证比例高</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fa fa-check text-primary mr-2"></i>
+                                <span>投资回报期较长</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-primary-light/20 rounded-lg p-6">
+                        <h4 class="font-bold text-lg mb-4 text-center">中端绿色酒店</h4>
+                        <ul class="space-y-2">
+                            <li class="flex items-center">
+                                <i class="fa fa-check text-primary mr-2"></i>
+                                <span>成本效益导向</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fa fa-check text-primary mr-2"></i>
+                                <span>重点领域绿色实践</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fa fa-check text-primary mr-2"></i>
+                                <span>国内认证为主</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fa fa-check text-primary mr-2"></i>
+                                <span>投资回报期适中</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-primary-light/20 rounded-lg p-6">
+                        <h4 class="font-bold text-lg mb-4 text-center">经济型绿色酒店</h4>
+                        <ul class="space-y-2">
+                            <li class="flex items-center">
+                                <i class="fa fa-check text-primary mr-2"></i>
+                                <span>低成本绿色解决方案</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fa fa-check text-primary mr-2"></i>
+                                <span>基础绿色措施</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fa fa-check text-primary mr-2"></i>
+                                <span>社区参与度高</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fa fa-check text-primary mr-2"></i>
+                                <span>投资回报期短</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // New navigation JavaScript
+        const menuToggle = document.getElementById('menu-toggle');
+        const sideMenu = document.getElementById('side-menu');
+        const overlay = document.getElementById('overlay');
+
+        function toggleMenu() {
+            sideMenu.classList.toggle('open');
+            overlay.classList.toggle('visible');
+            menuToggle.classList.toggle('active');
+        }
+
+        menuToggle.addEventListener('click', toggleMenu);
+        overlay.addEventListener('click', toggleMenu);
+
+        const sideMenuLinks = document.querySelectorAll('#side-menu a');
+        sideMenuLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                if (sideMenu.classList.contains('open')) {
+                    setTimeout(() => {
+                        toggleMenu();
+                    }, 100);
+                }
+            });
+        });
+
+        // 滚动动画
+        const animateElements = document.querySelectorAll('.animate-on-scroll');
+        
+        function checkScroll() {
+            animateElements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const elementVisible = 150;
+                
+                if (elementTop < window.innerHeight - elementVisible) {
+                    element.classList.add('visible');
+                }
+            });
+        }
+        
+        window.addEventListener('scroll', checkScroll);
+        checkScroll(); // 初始检查
+        
+        // 数字计数动画
+        const counters = document.querySelectorAll('.counter');
+        
+        function startCounting() {
+            counters.forEach(counter => {
+                const target = +counter.getAttribute('data-target');
+                const duration = 2000; // 2秒
+                const startTime = performance.now();
+                
+                const updateCounter = (currentTime) => {
+                    const elapsedTime = currentTime - startTime;
+                    if (elapsedTime < duration) {
+                        const progress = elapsedTime / duration;
+                        const value = Math.floor(progress * target);
+                        counter.textContent = value;
+                        requestAnimationFrame(updateCounter);
+                    } else {
+                        counter.textContent = target;
+                    }
+                };
+                
+                requestAnimationFrame(updateCounter);
+            });
+        }
+        
+        // 监听滚动事件，当计数器元素进入视口时开始计数
+        let counted = false;
+        window.addEventListener('scroll', () => {
+            if (!counted && isInViewport(document.querySelector('.counter'))) {
+                startCounting();
+                counted = true;
+            }
+        });
+        
+        // 检查元素是否在视口中
+        function isInViewport(element) {
+            const rect = element.getBoundingClientRect();
+            return (
+                rect.top <= (window.innerHeight || document.documentElement.clientHeight) &&
+                rect.bottom >= 0
+            );
+        }
+        
+        // 初始检查
+        if (isInViewport(document.querySelector('.counter'))) {
+            startCounting();
+            counted = true;
+        }
+        
+        // 初始化图表
+        function initCharts() {
+            // 区域分布图表
+            new Chart(document.getElementById('regional-distribution-chart'), {
+                type: 'bar',
+                data: {
+                    labels: ['上海', '江苏', '浙江'],
+                    datasets: [
+                        {
+                            label: '绿色酒店数量',
+                            data: [245, 187, 212],
+                            backgroundColor: '#7abf18'
+                        },
+                        {
+                            label: '高星级占比(%)',
+                            data: [45, 38, 42],
+                            backgroundColor: '#5A9E16'
+                        },
+                        {
+                            label: '认证覆盖率(%)',
+                            data: [85, 78, 82],
+                            backgroundColor: '#B5E673'
+                        },
+                        {
+                            label: '投资规模(亿元)',
+                            data: [45, 32, 38],
+                            backgroundColor: '#16A085'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            // 星级分布图表
+            new Chart(document.getElementById('star-rating-chart'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['五星级', '四星级', '三星级', '三星级以下'],
+                    datasets: [{
+                        data: [35, 30, 25, 10],
+                        backgroundColor: [
+                            '#7abf18',
+                            '#5A9E16',
+                            '#B5E673',
+                            '#16A085'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+
+            // 星级对比图表
+            new Chart(document.getElementById('star-comparison-chart'), {
+                type: 'radar',
+                data: {
+                    labels: ['能源管理', '水资源利用', '废弃物处理', '绿色供应链', '环保认证', '技术创新'],
+                    datasets: [
+                        {
+                            label: '五星级酒店',
+                            data: [90, 85, 88, 82, 95, 87],
+                            backgroundColor: 'rgba(122, 191, 24, 0.2)',
+                            borderColor: '#7abf18',
+                            borderWidth: 2
+                        },
+                        {
+                            label: '四星级酒店',
+                            data: [75, 70, 68, 65, 80, 72],
+                            backgroundColor: 'rgba(90, 158, 22, 0.2)',
+                            borderColor: '#5A9E16',
+                            borderWidth: 2
+                        },
+                        {
+                            label: '三星级及以下',
+                            data: [60, 55, 52, 48, 65, 50],
+                            backgroundColor: 'rgba(181, 230, 115, 0.2)',
+                            borderColor: '#B5E673',
+                            borderWidth: 2
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        r: {
+                            angleLines: {
+                                display: true
+                            },
+                            suggestedMin: 0,
+                            suggestedMax: 100
+                        }
+                    }
+                }
+            });
+
+            // 认证情况图表
+            new Chart(document.getElementById('certification-chart'), {
+                type: 'pie',
+                data: {
+                    labels: ['绿色旅游饭店（金叶）', '绿色旅游饭店（银叶）', '国家标准绿色饭店', 'LEED认证', '其他'],
+                    datasets: [{
+                        data: [25, 30, 20, 15, 10],
+                        backgroundColor: [
+                            '#7abf18',
+                            '#5A9E16',
+                            '#B5E673',
+                            '#16A085',
+                            '#d1e7a9'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'right'
+                        }
+                    }
+                }
+            });
+        }
+        
+        // 页面加载完成后初始化图表
+        window.addEventListener('DOMContentLoaded', initCharts);
+    </script>
+</body>
+</html>
